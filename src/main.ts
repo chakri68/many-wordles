@@ -68,14 +68,49 @@ async function route() {
   const t = today();
   let d = day ?? t;
   if (!Number.isInteger(d) || d < 1 || (!import.meta.env.DEV && d > t)) d = t;
+  const stop = loading(v.id);
   try {
     const mount = await prepareGame(v, d, t);
     if (token !== routeToken) return;
+    stop(true);
     swap(mount, 'forward');
   } catch (err) {
     console.error(err);
-    if (token === routeToken) toast("Couldn't load the word lists. Offline?", { kind: 'error', ms: 3000 });
+    stop(false);
+    if (token === routeToken) toast("Couldn't load the game data. Offline?", { kind: 'error', ms: 3000 });
   }
+}
+
+// ---- loading feedback --------------------------------------------------
+// Warmer/Bridge pull a 2 MB table on first open; word lists are smaller but
+// still a fetch. The tapped card says so at once; a top bar appears only if
+// it takes longer than a blink, grows once and holds (no looping spinner).
+const bar = h('div', { class: 'route-progress', role: 'progressbar', 'aria-label': 'Loading game', 'aria-hidden': 'true' });
+document.body.append(bar);
+let barTimer = 0;
+
+function loading(id: string): (ok: boolean) => void {
+  const card = app.querySelector<HTMLElement>(`.card[href="#/${id}"]`);
+  card?.classList.add('pending');
+  card?.setAttribute('aria-busy', 'true');
+  clearTimeout(barTimer);
+  bar.className = 'route-progress';
+  barTimer = window.setTimeout(() => {
+    bar.className = 'route-progress on';
+    bar.setAttribute('aria-hidden', 'false');
+  }, 120);
+  return (ok) => {
+    clearTimeout(barTimer);
+    card?.classList.remove('pending');
+    card?.removeAttribute('aria-busy');
+    if (bar.classList.contains('on')) {
+      bar.className = `route-progress on ${ok ? 'done' : 'failed'}`;
+      setTimeout(() => {
+        bar.className = 'route-progress';
+        bar.setAttribute('aria-hidden', 'true');
+      }, 260);
+    }
+  };
 }
 
 function mountHub() {

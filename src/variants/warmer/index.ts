@@ -289,7 +289,10 @@ const warmer: Variant<WarmerState, WarmerAction> = {
         detail: `${word} in ${s.guesses.length} guesses${hints ? `, ${hints} hint${hints > 1 ? 's' : ''}` : ''}.`,
       };
     const b = best(s);
-    return { title: 'Cold case.', detail: `It was ${word}. Your best was #${Number.isFinite(b) ? fmt(b) : '–'}.` };
+    return {
+      title: 'Cold case.',
+      detail: Number.isFinite(b) ? `It was ${word}. Your best was #${fmt(b)}.` : `It was ${word}. No guesses this time.`,
+    };
   },
   endExtra(s) {
     const near = Array.from(s.r.order.slice(1, 11), (w) => s.sem.vocab[w]);

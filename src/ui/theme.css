@@ -349,12 +349,6 @@ button {
 .row.current .tile[data-k='empty']:first-child,
 .row.current .tile[data-k='tbd'] + .tile[data-k='empty'] {
   background: var(--accent-soft);
-  animation: caret 1.1s steps(1) infinite;
-}
-@keyframes caret {
-  50% {
-    background: var(--raise-1);
-  }
 }
 .tile[data-k='G'] {
   background: var(--accent);
@@ -693,16 +687,9 @@ button {
 }
 .row.thinking .row-meta {
   color: var(--accent);
-  animation: blink 1s steps(2) infinite;
-}
-@keyframes blink {
-  50% {
-    opacity: 0.35;
-  }
 }
 .row.thinking .tile {
 
-  animation: think 1.1s ease-in-out infinite;
 }
 .row.thinking .tile:nth-child(2) {
   animation-delay: 0.1s;
@@ -715,15 +702,6 @@ button {
 }
 .row.thinking .tile:nth-child(5) {
   animation-delay: 0.4s;
-}
-@keyframes think {
-  0%,
-  100% {
-    background: var(--bg);
-  }
-  40% {
-    background: color-mix(in srgb, var(--accent) 14%, var(--bg));
-  }
 }
 .board.grow .row.current .tile {
   animation: none;
@@ -765,6 +743,7 @@ button {
   padding: 12px 0 22px;
 }
 .logo {
+  text-shadow: 0 0 14px var(--glow);
   margin: 0;
   font-family: var(--font-pixel);
   font-weight: 400;
@@ -772,15 +751,6 @@ button {
   letter-spacing: -0.5px;
   color: var(--accent);
   text-shadow: 0 0 14px var(--glow);
-  animation: glow 2.4s ease-in-out infinite alternate;
-}
-@keyframes glow {
-  from {
-    text-shadow: 0 0 8px var(--glow-soft);
-  }
-  to {
-    text-shadow: 0 0 18px var(--glow);
-  }
 }
 .sub {
   margin: 12px 0 0;
@@ -918,41 +888,11 @@ button {
 
 /* demo tiles on hub cards breathe a little */
 .card-art .tile.decaying {
-  animation: decay-demo 4s ease-in-out infinite;
-}
-@keyframes decay-demo {
-  0%,
-  35% {
-    background: var(--accent);
-    border-color: transparent;
-    color: var(--bg);
-  }
-  55%,
-  100% {
-    background: transparent;
-    border-color: color-mix(in srgb, var(--muted) 45%, transparent);
-    color: var(--text);
-  }
 }
 .card-art .tile.decaying {
   border-style: dashed;
 }
 .card-art .tile.cycling {
-  animation: cycle-demo 3s steps(1) infinite;
-}
-@keyframes cycle-demo {
-  0% {
-    background: var(--b-fill);
-    color: var(--muted);
-  }
-  33% {
-    background: var(--y-fill);
-    color: var(--accent);
-  }
-  66% {
-    background: var(--accent);
-    color: var(--bg);
-  }
 }
 
 /* ---- modal / sheet ---------------------------------------------------- */
@@ -1217,7 +1157,7 @@ dialog.modal::backdrop {
   text-align: center;
   font-size: 12px;
   color: var(--muted);
-  margin-top: 14px;
+  margin-top: 24px;
   font-variant-numeric: tabular-nums;
 }
 .countdown b {
@@ -1457,7 +1397,6 @@ dialog ~ .toasts,
 .loading::after {
   content: '_';
   color: var(--accent);
-  animation: blink 1s steps(2) infinite;
 }
 
 .sr-only {
@@ -1490,36 +1429,14 @@ dialog ~ .toasts,
 
 /* hub art */
 .card-art .tile.glowing {
-  animation: glow-tile 2.4s ease-in-out infinite alternate;
-}
-@keyframes glow-tile {
-  from {
-    box-shadow: 0 0 4px -2px var(--glow-soft);
-  }
-  to {
-    box-shadow: 0 0 18px 0 var(--glow);
-  }
 }
 .card-art .tile.linking {
-  animation: link-demo 2.4s ease-in-out infinite;
 }
 .card-art .tile.linking:nth-child(3) {
   animation-delay: 0.25s;
 }
 .card-art .tile.linking:nth-child(4) {
   animation-delay: 0.5s;
-}
-@keyframes link-demo {
-  0%,
-  30%,
-  100% {
-    border-color: color-mix(in srgb, var(--muted) 45%, transparent);
-    color: var(--muted);
-  }
-  50% {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
 }
 
 /* shared: top stats strip + text dock */
@@ -1933,7 +1850,6 @@ dialog ~ .toasts,
   border-style: dashed;
   color: var(--muted);
   background: none;
-  animation: blink 1.4s steps(2) infinite;
   border: 1px dashed var(--muted);
 }
 .bline {
@@ -2202,7 +2118,6 @@ dialog ~ .toasts,
 }
 .twin::before {
   background: var(--accent);
-  animation: blink 1.2s steps(2) infinite;
 }
 .twin-k {
   font-family: var(--font-pixel);
@@ -2394,4 +2309,89 @@ dialog ~ .toasts,
 }
 .rv-clues li::marker {
   color: var(--muted);
+}
+
+/* hub demo tiles: stills of what each game does */
+.card-art .tile.decaying {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--muted) 45%, transparent);
+  color: var(--text);
+}
+.card-art .tile.cycling {
+  background: var(--y-fill);
+  color: var(--accent);
+}
+.card-art .tile.glowing {
+  box-shadow: 0 0 14px -2px var(--glow-soft);
+}
+.card-art .tile.linking {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--muted) 45%, transparent);
+  color: var(--muted);
+}
+.row.thinking .tile {
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+}
+
+/* ---- loading ---------------------------------------------------------- */
+.route-progress {
+  position: fixed;
+  z-index: 300;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--glow);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+/* grows fast then crawls toward 90% and holds; finishing snaps to full + fades */
+.route-progress.on {
+  opacity: 1;
+  animation: progress-crawl 4s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
+}
+.route-progress.done {
+  animation: none;
+  transform: scaleX(1);
+  opacity: 0;
+  transition:
+    transform 0.15s ease-out,
+    opacity 0.2s ease-out 0.08s;
+}
+.route-progress.failed {
+  animation: none;
+  background: var(--danger);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+@keyframes progress-crawl {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.9);
+  }
+}
+
+.card.pending {
+  background: var(--raise-2);
+  pointer-events: none;
+}
+.card.pending .status {
+  display: none;
+}
+.card.pending .card-top::after {
+  content: 'loading…';
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 6px 13px;
+  font-size: 11px;
+  font-weight: 700;
+}
+[data-rm] .route-progress.on {
+  transform: scaleX(0.6);
 }
