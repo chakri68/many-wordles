@@ -38,6 +38,8 @@ export interface Variant<State, Action> {
   destroy?(root: HTMLElement): void;
   /** the end-screen headline + detail */
   summary(state: State): { title: string; detail: string };
+  /** extra end-screen content (a chart, the bot's path, …) */
+  endExtra?(state: State): Node | null;
 }
 
 // eslint-friendly erased helper so the registry can hold heterogeneous variants

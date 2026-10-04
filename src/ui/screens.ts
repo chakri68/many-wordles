@@ -61,6 +61,8 @@ export function statsModal(e: EndInfo) {
     body.append(
       h('div', { class: 'result-head' }, h('p', { class: 'result-title' }, sum.title), h('p', { class: 'result-detail' }, sum.detail)),
     );
+    const extra = v.endExtra?.(state);
+    if (extra) body.append(extra);
   }
   if (archive) body.append(h('p', { class: 'notice' }, `archive puzzle #${day}. it doesn't touch your stats or streak.`));
 

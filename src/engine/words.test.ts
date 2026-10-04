@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { readPublic } from '../test/setup';
 import { answerFor, makeLists } from './words';
@@ -7,6 +8,10 @@ import { answerFor, makeLists } from './words';
 const PINNED: Record<string, string> = {
   'words/answers.v1.txt': '04594103faeb9962defbc84525967600980d1abc4af60209673fff27b1279aae',
   'words/allowed.v1.txt': 'a05b9b9ba711f1bde6a093b4fb250ab679f133594f76729b9afdd0a780c467a7',
+  'semantic/vocab.v1.txt': 'c36891c9ba71592697800b6d0a176675cde49d3e423bf00f55e72d9432e60e1d',
+  'semantic/embed.v1.bin': '7745b32cd00797843eab14e49e6cbb6050f5ade327cf5e2d851e34a2c4e10baf',
+  'semantic/answers.v1.txt': 'fead4bf2663885846db1383c2d0e975dcd1cbfce76af3d6ceadde3d2d307f3d1',
+  'semantic/meta.v1.json': 'fcb2272c50775d6ca0332d6d8bcfbde4499f13e37e5af815534aa2b4f8bb8ee6',
   'reverse/openers.v1.json': 'b646c2a05a68e55d8a662b68a8e7c7123e228d4b7913e4348c5b6ce7c253586e',
 };
 
@@ -14,7 +19,7 @@ const lists = makeLists(readPublic('words/answers.v1.txt'), readPublic('words/al
 
 describe('word lists', () => {
   it.each(Object.entries(PINNED))('%s hash is pinned', (file, hash) => {
-    expect(createHash('sha256').update(readPublic(file)).digest('hex')).toBe(hash);
+    expect(createHash('sha256').update(readFileSync(new URL(`../../public/${file}`, import.meta.url))).digest('hex')).toBe(hash);
   });
 
   it('answers ⊆ allowed, all 5 lowercase letters', () => {

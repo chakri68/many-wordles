@@ -8,8 +8,7 @@ const PUBLIC = fileURLToPath(new URL('../../public/', import.meta.url));
 vi.stubGlobal('location', { href: 'http://test.local/' });
 vi.stubGlobal('fetch', async (input: string | URL) => {
   const path = new URL(String(input)).pathname.replace(/^\//, '');
-  const body = readFileSync(PUBLIC + path, 'utf8');
-  return new Response(body, { status: 200 });
+  return new Response(readFileSync(PUBLIC + path), { status: 200 });
 });
 
 export const readPublic = (p: string) => readFileSync(PUBLIC + p, 'utf8');

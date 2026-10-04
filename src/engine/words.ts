@@ -53,10 +53,9 @@ export function makeLists(answersTxt: string, allowedTxt: string, denyTxt: strin
 
 const permCache = new Map<string, Uint32Array>();
 
-/** Keyed permutation: no repeats until the list is exhausted, nothing stored. */
-export function answerFor(lists: Lists, variant: string, day: number): string {
-  const { answers, deny } = lists;
-  const N = answers.length;
+/** Keyed permutation: no repeats until the pool is exhausted, nothing stored. */
+export function pickFromPool(pool: readonly string[], deny: ReadonlySet<string>, variant: string, day: number): string {
+  const N = pool.length;
   const cycle = Math.floor(day / N);
   const key = `${variant}:${cycle}:${N}`;
   let perm = permCache.get(key);
@@ -65,6 +64,10 @@ export function answerFor(lists: Lists, variant: string, day: number): string {
     permCache.set(key, perm);
   }
   let i = perm[((day % N) + N) % N];
-  for (let guard = 0; deny.has(answers[i]) && guard < N; guard++) i = (i + 1) % N;
-  return answers[i];
+  for (let guard = 0; deny.has(pool[i]) && guard < N; guard++) i = (i + 1) % N;
+  return pool[i];
+}
+
+export function answerFor(lists: Lists, variant: string, day: number): string {
+  return pickFromPool(lists.answers, lists.deny, variant, day);
 }

@@ -9,6 +9,8 @@ const ART: Record<string, { word: string; kinds: TileKind[]; cls?: (string | nul
   decay: { word: 'decay', kinds: ['G', 'Y', 'G', 'B', 'G'], cls: [null, null, 'decaying', null, null] },
   reverse: { word: 'guess', kinds: ['B', 'Y', 'B', 'G', 'B'], cls: [null, null, 'cycling', null, null] },
   suspect: { word: 'liars', kinds: ['G', 'B', 'Y', 'B', 'G'], cls: [null, null, 'suspected', null, null] },
+  warmer: { word: 'close', kinds: ['B', 'B', 'Y', 'Y', 'G'], cls: [null, null, null, null, 'glowing'] },
+  bridge: { word: 'a···b', kinds: ['G', 'decayed', 'decayed', 'decayed', 'G'], cls: [null, 'linking', 'linking', 'linking', null] },
 };
 
 function art(id: string) {
@@ -68,7 +70,7 @@ export function renderHub(opts: { enter: boolean; onSettings: () => void }): HTM
       'header',
       { class: 'hub-head' },
       h('h1', { class: 'logo', style: '--i:0' }, APP_NAME, h('span', { class: 'cursor' }, '_')),
-      h('p', { class: 'sub', style: '--i:1' }, 'three daily word games. one puzzle each, same for everyone.'),
+      h('p', { class: 'sub', style: '--i:1' }, 'five daily word games. one puzzle each, same for everyone.'),
     ),
     h('main', { class: 'cards' }, ...cards),
     h(

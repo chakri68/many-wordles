@@ -1,7 +1,8 @@
 // Offline cache. Navigations: network-first (fresh deploys win), fall back to
 // cache. Everything else, incl. fonts + hosted tokens: stale-while-revalidate.
-// Word lists are frozen per version, so serving them stale is always correct.
-const CACHE = 'wordshift-v1';
+// Word lists + the semantic table are frozen per version, so stale is always
+// correct. The 2 MB embedding table is cached on first use, not precached.
+const CACHE = 'wordshift-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './favicon.svg',
   './words/answers.v1.txt', './words/allowed.v1.txt', './words/denylist.txt', './reverse/openers.v1.json'];
 

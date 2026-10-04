@@ -6,6 +6,8 @@ import decay, { reduce as decayReduce } from './decay';
 import suspect, { reduce as suspectReduce } from './suspect';
 import reverse, { reduce as reverseReduce } from './reverse';
 import { bestGuess } from './reverse/solver';
+import warmer from './warmer';
+import bridge from './bridge';
 
 const typed = (w: string) => [...[...w].map((ch) => ({ t: 'type' as const, ch })), { t: 'enter' as const }];
 const PROBE = ['crane', 'pilot', 'mushy', 'dwelt', 'fjord'];
@@ -39,6 +41,24 @@ describe('golden: days 1–30', () => {
       s = reverseReduce(s, { t: 'submit' }); // all-black, if anything fits
       const next = s.status === 'thinking' ? bestGuess(s.ctx, s.cands, s.seed, 1) : '-';
       out.push(`${d} ${opener} ${s.cands.length} ${next}`);
+    }
+    expect(out).toMatchSnapshot();
+  });
+
+  it('warmer', async () => {
+    const out: string[] = [];
+    for (let d = 1; d <= 30; d++) {
+      const s = await warmer.init(d, seedFor('warmer', d));
+      out.push(`${d} ${s.sem.vocab[s.answer]} ${Array.from(s.r.order.slice(1, 4), (w) => s.sem.vocab[w]).join(',')}`);
+    }
+    expect(out).toMatchSnapshot();
+  });
+
+  it('bridge', async () => {
+    const out: string[] = [];
+    for (let d = 1; d <= 30; d++) {
+      const s = await bridge.init(d, seedFor('bridge', d));
+      out.push(`${d} ${s.par.map((w) => s.sem.vocab[w]).join('>')}`);
     }
     expect(out).toMatchSnapshot();
   });

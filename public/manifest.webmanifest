@@ -1,7 +1,7 @@
 {
   "name": "wordshift",
   "short_name": "wordshift",
-  "description": "Three daily word games. One puzzle each, same for everyone.",
+  "description": "Five daily word games. One puzzle each, same for everyone.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
