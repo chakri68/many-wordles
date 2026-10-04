@@ -1,15 +1,20 @@
 {
   "name": "many-wordles",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "openers": "node scripts/openers.ts"
   },
   "devDependencies": {
+    "@types/node": "^26.6.4",
     "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "vitest": "^5.0.3"
   }
 }

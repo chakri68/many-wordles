@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`seed + rng > mulberry32 stream is pinned 1`] = `
+[
+  930279,
+  307602,
+  21260,
+  900214,
+  395823,
+]
+`;

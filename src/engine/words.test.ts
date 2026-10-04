@@ -1,0 +1,47 @@
+import { createHash } from 'node:crypto';
+import { describe, expect, it } from 'vitest';
+import { readPublic } from '../test/setup';
+import { answerFor, makeLists } from './words';
+
+// Frozen lists (spec §3.2). If this fails you edited a shipped list: don't.
+const PINNED: Record<string, string> = {
+  'words/answers.v1.txt': '04594103faeb9962defbc84525967600980d1abc4af60209673fff27b1279aae',
+  'words/allowed.v1.txt': 'a05b9b9ba711f1bde6a093b4fb250ab679f133594f76729b9afdd0a780c467a7',
+  'reverse/openers.v1.json': 'b646c2a05a68e55d8a662b68a8e7c7123e228d4b7913e4348c5b6ce7c253586e',
+};
+
+const lists = makeLists(readPublic('words/answers.v1.txt'), readPublic('words/allowed.v1.txt'), readPublic('words/denylist.txt'));
+
+describe('word lists', () => {
+  it.each(Object.entries(PINNED))('%s hash is pinned', (file, hash) => {
+    expect(createHash('sha256').update(readPublic(file)).digest('hex')).toBe(hash);
+  });
+
+  it('answers ⊆ allowed, all 5 lowercase letters', () => {
+    for (const a of lists.answers) {
+      expect(a).toMatch(/^[a-z]{5}$/);
+      expect(lists.allowed.has(a)).toBe(true);
+    }
+  });
+
+  it('no repeats until the list is exhausted', () => {
+    const N = lists.answers.length;
+    const seen = new Set<string>();
+    for (let d = 0; d < N; d++) seen.add(answerFor(lists, 'decay', d));
+    expect(seen.size).toBe(N);
+  });
+
+  it('variants get different words on the same day', () => {
+    let same = 0;
+    for (let d = 1; d <= 100; d++) if (answerFor(lists, 'decay', d) === answerFor(lists, 'suspect', d)) same++;
+    expect(same).toBeLessThan(3);
+  });
+
+  it('denylist skips deterministically', () => {
+    const w = answerFor(lists, 'decay', 5);
+    const denied = { ...lists, deny: new Set([w]) };
+    const next = answerFor(denied, 'decay', 5);
+    expect(next).not.toBe(w);
+    expect(answerFor(denied, 'decay', 5)).toBe(next);
+  });
+});
