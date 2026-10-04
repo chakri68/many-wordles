@@ -1,6 +1,11 @@
 import { dayIndex, nextRollover } from '../engine/seed';
 
-export const APP_NAME = 'wordshift'; // placeholder brand, spec §11.1. Not "Wordle".
+// Spec §11.1 rules out "Wordle" (NYT trademark); the owner chose this name anyway.
+// One constant, so a rename is one line (plus index.html, manifest, OG cards).
+export const APP_NAME = 'Many Wordles';
+
+/** Public link to a game's own page (it carries that game's social card). */
+export const gameUrl = (id: string) => new URL(`./${id}/`, new URL('./', document.baseURI)).href;
 
 /** Today's puzzle. Before launch everyone gets a preview of #1. */
 export const today = () => Math.max(1, dayIndex(new Date()));

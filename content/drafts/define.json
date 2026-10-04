@@ -1,0 +1,674 @@
+[
+  {
+    "answer": "whisper",
+    "clues": [
+      "verb or noun",
+      "something done with very little breath",
+      "often to keep a secret",
+      "a game of telephone is built on it",
+      "what you do in a library",
+      "to speak very softly"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "harvest",
+    "clues": [
+      "noun or verb",
+      "it happens once a year in many places",
+      "a moon is named after it",
+      "farmers celebrate it with festivals",
+      "it often needs a combine",
+      "the gathering of ripe crops"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "gravity",
+    "clues": [
+      "noun",
+      "seriousness, in one sense",
+      "Einstein rethought it as curved space",
+      "an apple supposedly helped explain it",
+      "it keeps the moon in orbit",
+      "the force that pulls things toward the ground"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "ballot",
+    "clues": [
+      "noun",
+      "it's often kept secret",
+      "it can be cast",
+      "it ends up in a box",
+      "you mark it with an X or a tick",
+      "a paper used to vote"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "recipe",
+    "clues": [
+      "noun",
+      "it can be for disaster",
+      "it lists things in a particular order",
+      "grandmothers guard theirs",
+      "cookbooks are full of them",
+      "instructions for preparing a dish"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "fossil",
+    "clues": [
+      "noun",
+      "slang for a very old-fashioned person",
+      "it can be a fuel",
+      "found in sedimentary rock",
+      "dinosaurs are known through them",
+      "the preserved remains of an ancient living thing"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "echo",
+    "clues": [
+      "noun or verb",
+      "a nymph in Greek myth became one",
+      "bats and dolphins use it to find things",
+      "you hear it in caves and canyons",
+      "it repeats what you say",
+      "a sound reflected back to you"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "curfew",
+    "clues": [
+      "noun",
+      "it has a time attached",
+      "parents set them for teenagers",
+      "imposed during riots or wartime",
+      "breaking one can get you arrested",
+      "a rule that says you must be indoors after a certain hour"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "jury",
+    "clues": [
+      "noun",
+      "it can still be out",
+      "usually twelve of them in the US",
+      "they're told not to read the news",
+      "they deliver a verdict",
+      "a group of citizens deciding a court case"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "orbit",
+    "clues": [
+      "noun or verb",
+      "your social one is your circle",
+      "satellites live in one",
+      "the ISS completes one every 90 minutes",
+      "Earth takes a year to make one",
+      "the curved path of one body around another"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "vaccine",
+    "clues": [
+      "noun",
+      "it trains your body",
+      "Edward Jenner pioneered one using cowpox",
+      "it often comes as a jab",
+      "it protects against diseases like measles",
+      "a shot that gives you immunity"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "mortgage",
+    "clues": [
+      "noun or verb",
+      "from Old French words meaning 'death pledge'",
+      "it usually lasts decades",
+      "rates go up and down",
+      "the bank holds it",
+      "a loan used to buy a house"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "alibi",
+    "clues": [
+      "noun",
+      "Latin for 'elsewhere'",
+      "it can be airtight",
+      "detectives try to break it",
+      "a suspect needs a good one",
+      "proof you were somewhere else when a crime happened"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "sculpture",
+    "clues": [
+      "noun",
+      "it can be abstract or lifelike",
+      "Michelangelo's David is one",
+      "made with a chisel, or a welder",
+      "museums put them on plinths",
+      "a three-dimensional work of art"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "hammock",
+    "clues": [
+      "noun",
+      "something to relax in",
+      "sailors once slept in them",
+      "it hangs",
+      "usually between two trees",
+      "a swinging bed of net or cloth"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "avalanche",
+    "clues": [
+      "noun",
+      "an overwhelming amount of something",
+      "an inbox can suffer one",
+      "skiers check the risk before heading out",
+      "it starts high on a slope",
+      "a mass of snow sliding down a mountain"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "quarantine",
+    "clues": [
+      "noun or verb",
+      "from the Italian for 'forty days'",
+      "ships once waited in harbour for it",
+      "pets entering some countries go into it",
+      "everyone learned the word in 2020",
+      "isolation to stop a disease spreading"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "nostalgia",
+    "clues": [
+      "noun",
+      "it often comes with a soundtrack",
+      "originally a word for homesickness",
+      "retro fashion runs on it",
+      "it's bittersweet",
+      "a sentimental longing for the past"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "lullaby",
+    "clues": [
+      "noun",
+      "it's meant to work on its audience",
+      "Brahms wrote a famous one",
+      "often sung softly at night",
+      "parents sing them to babies",
+      "a song that helps a child fall asleep"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "pilgrim",
+    "clues": [
+      "noun",
+      "a traveller with a purpose",
+      "Chaucer's tales were told by them",
+      "they walk the Camino de Santiago",
+      "some sailed on the Mayflower",
+      "someone who journeys to a holy place"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "oxygen",
+    "clues": [
+      "noun",
+      "it's in the air, literally",
+      "number 8 on the periodic table",
+      "fire needs it to burn",
+      "plants release it during photosynthesis",
+      "the gas we need to breathe"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "budget",
+    "clues": [
+      "noun or verb",
+      "governments announce theirs every year",
+      "it can be tight",
+      "it can describe cheap airlines",
+      "you plan one to avoid overspending",
+      "an estimate of income and spending"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "migration",
+    "clues": [
+      "noun",
+      "it can be of data",
+      "the wildebeest do a famous one",
+      "geese fly in a V during it",
+      "birds head south for it in autumn",
+      "seasonal movement of animals from one region to another"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "eclipse",
+    "clues": [
+      "noun or verb",
+      "one achievement can do this to another",
+      "people wear special glasses for it",
+      "it can be partial, total or annular",
+      "the moon gets in the way",
+      "when one celestial body blocks another's light"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "dialect",
+    "clues": [
+      "noun",
+      "linguists map them",
+      "the line between it and a language is political",
+      "Cockney is one",
+      "it includes its own words and grammar",
+      "a regional form of a language"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "ransom",
+    "clues": [
+      "noun",
+      "a note might demand it",
+      "kidnappers want it",
+      "some software now demands it in bitcoin",
+      "it's paid to get someone back",
+      "money demanded to release a captive"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "monsoon",
+    "clues": [
+      "noun",
+      "it comes back every year",
+      "farmers in South Asia depend on it",
+      "it changes direction with the seasons",
+      "Mumbai floods during it",
+      "the rainy season wind of the Indian Ocean"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "trophy",
+    "clues": [
+      "noun",
+      "it can be a wife, unkindly",
+      "hunters hang theirs on the wall",
+      "it often has handles",
+      "it sits on a shelf after a final",
+      "a cup awarded to a winner"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "insomnia",
+    "clues": [
+      "noun",
+      "late-night radio's best audience",
+      "caffeine makes it worse",
+      "counting sheep is supposed to help",
+      "it leaves you tired all day",
+      "the inability to fall or stay asleep"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "satire",
+    "clues": [
+      "noun",
+      "it often comes with a straight face",
+      "Jonathan Swift was a master of it",
+      "The Onion makes a living from it",
+      "it mocks the powerful",
+      "humour used to criticise or expose folly"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "glove",
+    "clues": [
+      "noun",
+      "it can be thrown down as a challenge",
+      "it fits like one",
+      "boxers, goalkeepers and surgeons wear them",
+      "Michael Jackson wore just one",
+      "a covering for the hand with a part for each finger"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "census",
+    "clues": [
+      "noun",
+      "it happens every ten years in many countries",
+      "Rome held one that sent Joseph to Bethlehem",
+      "it decides how seats are shared out",
+      "it asks who lives in your home",
+      "an official count of a population"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "carnival",
+    "clues": [
+      "noun",
+      "it often comes before Lent",
+      "a time of masks and parades",
+      "Rio's is the world's biggest",
+      "funfairs are sometimes called this",
+      "a festival with costumes, music and dancing"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "debris",
+    "clues": [
+      "noun",
+      "it orbits Earth in dangerous amounts",
+      "it's left after an explosion or storm",
+      "rescue teams sift through it",
+      "it can be from a wreck",
+      "scattered pieces of something destroyed"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "gossip",
+    "clues": [
+      "noun or verb",
+      "it travels fast",
+      "often shared over a fence or in the office",
+      "tabloids are built on it",
+      "it's usually about other people's lives",
+      "casual talk about others, often unkind or untrue"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "horizon",
+    "clues": [
+      "noun",
+      "travel is said to broaden it",
+      "something can be on it, meaning coming soon",
+      "ships seem to sink below it",
+      "the sun rises above it",
+      "the line where the sky seems to meet the earth"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "ritual",
+    "clues": [
+      "noun",
+      "it can be as small as morning coffee",
+      "anthropologists study them",
+      "weddings and funerals are full of them",
+      "it's repeated in a fixed order",
+      "a ceremony performed the same way each time"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "canyon",
+    "clues": [
+      "noun",
+      "a city street between skyscrapers can feel like one",
+      "rivers carve them over millions of years",
+      "it's deep and steep-sided",
+      "Arizona has the grandest one",
+      "a deep gorge, often with a river at the bottom"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "siren",
+    "clues": [
+      "noun",
+      "Odysseus tied himself to a mast to hear them",
+      "in myth, they lured sailors onto rocks",
+      "it can be a femme fatale",
+      "it wails when something's wrong",
+      "a loud warning sound from an ambulance or police car"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "tariff",
+    "clues": [
+      "noun",
+      "it's a kind of price list",
+      "trade wars are fought with them",
+      "it can protect local industry",
+      "it's charged at the border",
+      "a tax on imported goods"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "jugaad",
+    "clues": [
+      "noun",
+      "a kind of resourcefulness",
+      "it usually involves tape, wire or rubber bands",
+      "business books call it 'frugal innovation'",
+      "a Hindi word for a clever hack",
+      "an improvised fix made with whatever is at hand"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "yoga",
+    "clues": [
+      "noun",
+      "it has its own international day, 21 June",
+      "Patanjali wrote sutras about it",
+      "downward dog is part of it",
+      "you need a mat",
+      "a practice of postures, breathing and meditation from ancient India"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "wicket",
+    "clues": [
+      "noun",
+      "in British slang it can be sticky",
+      "it has two bails resting on top",
+      "bowlers celebrate taking one",
+      "a batter tries to protect it",
+      "the set of three stumps in cricket"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "bazaar",
+    "clues": [
+      "noun",
+      "online shops love borrowing the name",
+      "Istanbul has a Grand one",
+      "haggling is expected",
+      "crowded, noisy and full of stalls",
+      "a market street, especially in South Asia or the Middle East"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "saffron",
+    "clues": [
+      "noun or adjective",
+      "it's one of the colours on India's flag",
+      "by weight it can cost more than gold",
+      "Kashmir is famous for it",
+      "it comes from the stigma of a crocus",
+      "a red-gold spice that colours biryani"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "turban",
+    "clues": [
+      "noun",
+      "called a pagri in Hindi",
+      "Sikh men wear one",
+      "it can be several metres of cloth",
+      "it's tied, not stitched",
+      "a long cloth wound around the head"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "podcast",
+    "clues": [
+      "noun",
+      "true crime made them huge",
+      "Joe Rogan has a famous one",
+      "people listen at 1.5x speed",
+      "new episodes drop weekly",
+      "an audio show you stream or download"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "algorithm",
+    "clues": [
+      "noun",
+      "named after a Persian mathematician, al-Khwarizmi",
+      "creators blame it for everything",
+      "it decides what plays next on YouTube",
+      "it's a list of steps",
+      "a precise procedure for solving a problem"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "emoji",
+    "clues": [
+      "noun",
+      "Japanese for 'picture character'",
+      "the crying-laughing one was a word of the year in 2015",
+      "there's an aubergine that doesn't mean aubergine",
+      "it lives on your phone's keyboard",
+      "a tiny picture used in a text message"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "spam",
+    "clues": [
+      "noun or verb",
+      "originally a canned meat",
+      "a Monty Python sketch gave it its internet meaning",
+      "filters catch most of it",
+      "it fills your inbox and your SMS",
+      "unwanted bulk messages"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "cyclone",
+    "clues": [
+      "noun",
+      "it has an eye",
+      "in the north it spins anticlockwise",
+      "Odisha has evacuated millions ahead of them",
+      "the Bay of Bengal breeds them",
+      "a powerful rotating storm; a hurricane by another name"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "coconut",
+    "clues": [
+      "noun",
+      "broken at the start of something auspicious",
+      "botanically a drupe, not a nut",
+      "Kerala's name may come from its tree",
+      "its water is sold from carts by the road",
+      "a hard brown fruit with white flesh and water inside"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "tiffin",
+    "clues": [
+      "noun",
+      "a word left over from British India",
+      "Mumbai's dabbawalas deliver thousands a day",
+      "it comes as stacked steel containers",
+      "packed at home in the morning",
+      "a light lunch, or the box it comes in"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "touchdown",
+    "clues": [
+      "noun",
+      "planes make one too",
+      "it's worth six points",
+      "it happens in the end zone",
+      "Super Bowls are won with them",
+      "a score in American football"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "blockbuster",
+    "clues": [
+      "noun",
+      "originally a bomb big enough to flatten a city block",
+      "also a video rental chain that missed the internet",
+      "summer is its season",
+      "it has a huge opening weekend",
+      "a hugely successful film"
+    ],
+    "status": "draft"
+  },
+  {
+    "answer": "viral",
+    "clues": [
+      "adjective",
+      "it can describe an infection",
+      "marketers try to engineer it",
+      "a video can go this way overnight",
+      "it spreads from person to person",
+      "shared rapidly and widely online"
+    ],
+    "status": "draft"
+  }
+]

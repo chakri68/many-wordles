@@ -53,17 +53,22 @@ export function makeLists(answersTxt: string, allowedTxt: string, denyTxt: strin
 
 const permCache = new Map<string, Uint32Array>();
 
-/** Keyed permutation: no repeats until the pool is exhausted, nothing stored. */
-export function pickFromPool(pool: readonly string[], deny: ReadonlySet<string>, variant: string, day: number): string {
-  const N = pool.length;
-  const cycle = Math.floor(day / N);
-  const key = `${variant}:${cycle}:${N}`;
+/** Keyed permutation index: no repeats until n days have passed, nothing stored. */
+export function pickIndex(n: number, variant: string, day: number): number {
+  const cycle = Math.floor(day / n);
+  const key = `${variant}:${cycle}:${n}`;
   let perm = permCache.get(key);
   if (!perm) {
-    perm = shuffledIndices(N, seedFor(variant, -1 - cycle));
+    perm = shuffledIndices(n, seedFor(variant, -1 - cycle));
     permCache.set(key, perm);
   }
-  let i = perm[((day % N) + N) % N];
+  return perm[((day % n) + n) % n];
+}
+
+/** Same, over a word pool, with the deterministic denylist skip. */
+export function pickFromPool(pool: readonly string[], deny: ReadonlySet<string>, variant: string, day: number): string {
+  const N = pool.length;
+  let i = pickIndex(N, variant, day);
   for (let guard = 0; deny.has(pool[i]) && guard < N; guard++) i = (i + 1) % N;
   return pool[i];
 }

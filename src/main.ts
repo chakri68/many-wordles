@@ -54,6 +54,12 @@ async function route() {
   const { id, day } = parse();
   const v = id ? byId(id) : undefined;
   closeAllModals();
+  if (import.meta.env.DEV && id === 'review') {
+    const { mountReview } = await import('./ui/review');
+    swap(() => {}, 'forward');
+    await mountReview(app, go);
+    return;
+  }
   if (!v) {
     if (id) history.replaceState(null, '', '#/');
     swap(mountHub, 'back');
@@ -74,6 +80,7 @@ async function route() {
 
 function mountHub() {
   hubDay = today();
+  document.title = 'Many Wordles · daily word games';
   const enter = !booted;
   const page = renderHub({ enter: false, onSettings: settingsModal });
   app.replaceChildren(page);
@@ -115,6 +122,7 @@ async function prepareGame(v: AnyVariant, day: number, t: number) {
     };
     const openEnd = () => statsModal({ v, state, day, archive, over: v.isOver(state), go });
 
+    document.title = `${v.name} #${day} · Many Wordles`;
     const main = h('main', { class: 'game-main' });
     const page = h(
       'div',

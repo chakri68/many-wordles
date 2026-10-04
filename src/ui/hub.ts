@@ -11,6 +11,9 @@ const ART: Record<string, { word: string; kinds: TileKind[]; cls?: (string | nul
   suspect: { word: 'liars', kinds: ['G', 'B', 'Y', 'B', 'G'], cls: [null, null, 'suspected', null, null] },
   warmer: { word: 'close', kinds: ['B', 'B', 'Y', 'Y', 'G'], cls: [null, null, null, null, 'glowing'] },
   bridge: { word: 'a···b', kinds: ['G', 'decayed', 'decayed', 'decayed', 'G'], cls: [null, 'linking', 'linking', 'linking', null] },
+  missing: { word: 'the ?', kinds: ['B', 'B', 'B', 'empty', 'Y'], cls: [null, null, null, null, 'glowing'] },
+  define: { word: 'n.def', kinds: ['Y', 'B', 'B', 'B', 'B'], cls: [null, null, null, null, null] },
+  chrono: { word: '<?>', kinds: ['B', 'G', 'B'], cls: [null, 'glowing', null] },
 };
 
 function art(id: string) {
@@ -35,7 +38,7 @@ export function renderHub(opts: { enter: boolean; onSettings: () => void }): HTM
       ? h('span', { class: `chip status ${done.won ? 'done' : 'lost'}` }, done.won ? `✓ ${done.label}` : done.label)
       : started
         ? h('span', { class: 'chip status progress' }, 'in progress')
-        : h('span', { class: 'chip status' }, 'unplayed');
+        : null; // unplayed is the default: no badge (tag the exception)
     const streak = liveStreak(stats, day);
     return h(
       'a',
@@ -69,8 +72,8 @@ export function renderHub(opts: { enter: boolean; onSettings: () => void }): HTM
     h(
       'header',
       { class: 'hub-head' },
-      h('h1', { class: 'logo', style: '--i:0' }, APP_NAME, h('span', { class: 'cursor' }, '_')),
-      h('p', { class: 'sub', style: '--i:1' }, 'five daily word games. one puzzle each, same for everyone.'),
+      h('h1', { class: 'logo', style: '--i:0' }, APP_NAME.toLowerCase(), h('span', { class: 'cursor' }, '_')),
+      h('p', { class: 'sub', style: '--i:1' }, `${VARIANTS.length} daily puzzles. one each, same for everyone.`),
     ),
     h('main', { class: 'cards' }, ...cards),
     h(

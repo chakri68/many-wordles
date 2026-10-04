@@ -34,6 +34,31 @@ export function makeSem(vocabTxt: string, embed: ArrayBuffer | Int8Array, meta: 
   return { ...meta, vocab, index: new Map(vocab.map((w, i) => [w, i])), emb, answers: parseList(answersTxt) };
 }
 
+let vocabLoading: Promise<Set<string>> | null = null;
+/**
+ * Words accepted as free-text guesses in the clue games: the semantic vocab
+ * plus a frozen supplement of words GloVe-2014 never learned (chai, diwali,
+ * biryani, emoji, …).
+ */
+export const EXTRA_WORDS = 'words/extra.v1.txt';
+export function loadVocab(): Promise<Set<string>> {
+  if (!vocabLoading) {
+    const base = import.meta.env?.BASE_URL ?? './';
+    const get = (p: string) =>
+      fetch(new URL(base + p, location.href)).then((r) => {
+        if (!r.ok) throw new Error(`${p}: ${r.status}`);
+        return r.text();
+      });
+    vocabLoading = Promise.all([get(SEM_FILES.vocab), get(EXTRA_WORDS)])
+      .then(([a, b]) => new Set([...parseList(a), ...parseList(b)]))
+      .catch((e) => {
+        vocabLoading = null;
+        throw e;
+      });
+  }
+  return vocabLoading;
+}
+
 let loading: Promise<Sem> | null = null;
 export function loadSemantic(): Promise<Sem> {
   if (!loading) {

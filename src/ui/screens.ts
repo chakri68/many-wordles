@@ -8,7 +8,7 @@ import { h } from './dom';
 import { ICONS } from './icons';
 import { openModal } from './modal';
 import { toast } from './toast';
-import { liveCountdown, today } from './clock';
+import { gameUrl, liveCountdown, today } from './clock';
 
 export function rulesModal(v: AnyVariant, onClose?: () => void) {
   const body = h('div', { class: 'rules', html: v.rulesHtml });
@@ -73,7 +73,7 @@ export function statsModal(e: EndInfo) {
   if (over) {
     const share = h('button', { class: 'btn primary big', 'data-haptic': 'press', html: `${ICONS.share}<span>share result</span>` });
     share.addEventListener('click', async () => {
-      const r = await shareText(v.shareText(state, day));
+      const r = await shareText(`${v.shareText(state, day)}\n${gameUrl(v.id)}`);
       if (r === 'copied') toast('Copied!');
       else if (r === 'failed') toast('Copy failed', { kind: 'error' });
     });

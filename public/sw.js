@@ -2,9 +2,10 @@
 // cache. Everything else, incl. fonts + hosted tokens: stale-while-revalidate.
 // Word lists + the semantic table are frozen per version, so stale is always
 // correct. The 2 MB embedding table is cached on first use, not precached.
-const CACHE = 'wordshift-v2';
+const CACHE = 'many-wordles-v3';
 const CORE = ['./', './index.html', './manifest.webmanifest', './favicon.svg',
-  './words/answers.v1.txt', './words/allowed.v1.txt', './words/denylist.txt', './reverse/openers.v1.json'];
+  './words/answers.v1.txt', './words/allowed.v1.txt', './words/denylist.txt', './words/extra.v1.txt',
+  './reverse/openers.v1.json'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
@@ -22,14 +23,15 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   if (req.mode === 'navigate') {
+    // per-URL: /decay/ is its own page (own <base>, own social card)
     e.respondWith(
       fetch(req)
         .then((res) => {
           const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put('./index.html', copy));
+          caches.open(CACHE).then((c) => c.put(req, copy));
           return res;
         })
-        .catch(() => caches.match('./index.html')),
+        .catch(async () => (await caches.match(req)) || caches.match('./index.html')),
     );
     return;
   }

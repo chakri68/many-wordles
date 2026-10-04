@@ -3,23 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+    <title>Many Wordles · daily word games</title>
+    <meta name="description" content="Daily word games, each a twist on the classic: fading clues, lying tiles, a bot you score, meaning-based guessing and more. One puzzle each, same for everyone." />
+    <meta name="keywords" content="word game, daily puzzle, word puzzle, semantle, contexto, five letter words, vocabulary game, India" />
+    <link rel="canonical" href="%SITE_URL%" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Five daily word games. One puzzle each, same for everyone." />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- social cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Many Wordles" />
+    <meta property="og:title" content="Many Wordles · daily word games" />
+    <meta property="og:description" content="Daily word games, each a twist on the classic. One puzzle each, same for everyone." />
+    <meta property="og:url" content="%SITE_URL%" />
+    <meta property="og:image" content="%SITE_URL%og/home.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Many Wordles: amber pixel title over a row of word tiles" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Many Wordles · daily word games" />
+    <meta name="twitter:description" content="Daily word games, each a twist on the classic. One puzzle each, same for everyone." />
+    <meta name="twitter:image" content="%SITE_URL%og/home.png" />
+
+    <!-- icons + PWA -->
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
     <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Wordles" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Many Wordles",
+        "url": "%SITE_URL%",
+        "applicationCategory": "GameApplication",
+        "genre": "Word game",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Daily word games, each a twist on the classic. One puzzle each, same for everyone."
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" />
     <link rel="stylesheet" href="https://theme.chakri.me/tokens.css" />
-    <title>wordshift</title>
   </head>
   <body>
-    <div id="boot" aria-hidden="true"><div class="boot-title">wordshift_</div></div>
+    <div id="boot" aria-hidden="true"><div class="boot-title">many wordles_</div></div>
     <div id="app"></div>
+    <noscript><p style="font-family: monospace; padding: 24px">Many Wordles is a set of daily word games. It needs JavaScript to play.</p></noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
