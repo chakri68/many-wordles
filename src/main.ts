@@ -85,8 +85,8 @@ function mountHub() {
   const page = renderHub({ enter: false, onSettings: settingsModal });
   app.replaceChildren(page);
   if (enter && !reducedMotion() && document.getElementById('boot')) {
-    // cards rise as the splash title flies off
-    setTimeout(() => page.classList.add('enter'), 700);
+    // cards rise as the splash fades
+    setTimeout(() => page.classList.add('enter'), 60);
   }
   // warm the word lists so the first tap into a game is instant
   const idle = window.requestIdleCallback ?? ((f: () => void) => setTimeout(f, 300));
@@ -191,7 +191,7 @@ async function boot() {
     // the pixel font must never flash a fallback, so wait for it (briefly)
     await Promise.race([document.fonts?.load('20px "Press Start 2P"'), sleep(1200)]).catch(() => {});
     html.classList.replace('booting', 'booted');
-    setTimeout(() => splash.remove(), 1200);
+    setTimeout(() => splash.remove(), 400);
   } else {
     splash?.remove();
     html.classList.remove('booting');

@@ -26,7 +26,6 @@
   --raise-4: color-mix(in srgb, var(--text) 13%, transparent);
   --accent-soft: color-mix(in srgb, var(--accent) 16%, transparent);
   --focus-ring: color-mix(in srgb, var(--accent) 70%, transparent);
-  --lift-glow: color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 *,
@@ -775,11 +774,6 @@ button {
   text-shadow: 0 0 14px var(--glow);
   animation: glow 2.4s ease-in-out infinite alternate;
 }
-.cursor {
-  display: inline-block;
-  margin-left: 4px;
-  animation: blink 1.05s steps(2) infinite;
-}
 @keyframes glow {
   from {
     text-shadow: 0 0 8px var(--glow-soft);
@@ -819,7 +813,6 @@ button {
   .card:hover {
     background: var(--raise-2);
     transform: translateY(-3px);
-    box-shadow: 0 14px 40px -12px var(--lift-glow);
   }
 }
 .card:active {
@@ -1382,47 +1375,17 @@ dialog ~ .toasts,
 }
 
 /* ---- boot splash ------------------------------------------------------ */
+/* Plain black until the pixel font is ready (so the logo never flashes a
+   fallback face), then a quick fade. No title, no motion. */
 #boot {
   position: fixed;
   inset: 0;
   z-index: 200;
-  display: grid;
-  place-items: center;
   background: var(--bg);
   pointer-events: none;
 }
-#boot .boot-title {
-  font-family: var(--font-pixel);
-  font-size: 20px;
-  letter-spacing: -0.5px;
-  color: var(--accent);
-  opacity: 0;
-}
-.booting #boot .boot-title {
-  opacity: 0;
-}
-.booted #boot .boot-title {
-  animation: boot-in 0.9s var(--spring) both;
-}
 .booted #boot {
-  animation: boot-out 0.35s ease-in 0.75s both;
-}
-@keyframes boot-in {
-  0% {
-    opacity: 0;
-    text-shadow: none;
-    transform: scale(0.96);
-  }
-  40% {
-    opacity: 1;
-    text-shadow: 0 0 24px var(--glow);
-    transform: none;
-  }
-  100% {
-    opacity: 1;
-    text-shadow: 0 0 14px var(--glow);
-    transform: translateY(-34vh) scale(0.9);
-  }
+  animation: boot-out 0.25s ease-out both;
 }
 @keyframes boot-out {
   to {
@@ -1683,7 +1646,6 @@ dialog ~ .toasts,
 }
 .wlast.hot,
 .wlast.warm {
-  box-shadow: 0 14px 40px -12px var(--lift-glow);
   background: var(--raise-2);
 }
 .wlast.empty,
@@ -2064,7 +2026,6 @@ dialog ~ .toasts,
 .clue-list li:last-child .clue {
 
   background: var(--raise-2);
-  box-shadow: 0 14px 40px -14px var(--lift-glow);
 }
 .clue-n {
   font-family: var(--font-pixel);
@@ -2216,7 +2177,6 @@ dialog ~ .toasts,
 .trow.target {
 
   background: var(--accent-soft);
-  box-shadow: 0 14px 40px -12px var(--lift-glow);
 }
 .trow.target::before {
   background: var(--accent);

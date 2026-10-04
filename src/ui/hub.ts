@@ -72,7 +72,7 @@ export function renderHub(opts: { enter: boolean; onSettings: () => void }): HTM
     h(
       'header',
       { class: 'hub-head' },
-      h('h1', { class: 'logo', style: '--i:0' }, APP_NAME.toLowerCase(), h('span', { class: 'cursor' }, '_')),
+      h('h1', { class: 'logo', style: '--i:0' }, APP_NAME.toLowerCase()),
       h('p', { class: 'sub', style: '--i:1' }, `${VARIANTS.length} daily puzzles. one each, same for everyone.`),
     ),
     h('main', { class: 'cards' }, ...cards),
