@@ -2157,6 +2157,9 @@ dialog ~ .toasts,
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 -12px 40px rgb(0 0 0 / 0.5);
+  /* rows sit on the bottom edge, so a height tween reveals/clips at the top, away from the field */
+  align-content: end;
+  transform-origin: bottom center;
 }
 .sugg:empty {
   display: none;
@@ -2166,6 +2169,7 @@ dialog ~ .toasts,
   min-height: 44px;
   cursor: pointer;
   font-size: 14px;
+  transition: background 0.12s, color 0.12s;
 }
 .sugg li.active {
   background: color-mix(in srgb, var(--accent) 10%, var(--panel));

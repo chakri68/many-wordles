@@ -143,6 +143,7 @@ export function settingsModal() {
     h('div', { class: 'setting' }, h('label', {}, 'reduce motion'), seg, h('small', {}, 'instant swaps instead of flips & drains')),
     toggleRow('haptics', 'tiny ticks on taps. android only; iOS gets a best effort', 'haptics'),
     toggleRow('reverse: word counter', '"N words still possible", tap it for examples', 'reverseAids'),
+    toggleRow('auto suggest', 'warmer & bridge: spelling matches from the vocab as you type. spelling, not meaning', 'autoSuggest'),
     h('p', { class: 'muted', style: 'margin-top:14px;font-size:12px' }, 'theme: amber phosphor. there is no light mode; the CRT is off.'),
   );
   openModal('settings', body);

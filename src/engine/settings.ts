@@ -7,6 +7,8 @@ export interface Settings {
   haptics: boolean;
   /** Reverse: "N words still possible" counter */
   reverseAids: boolean;
+  /** Warmer/Bridge: spelling suggestions above the guess box */
+  autoSuggest: boolean;
 }
 
 const DEFAULTS: Settings = {
@@ -14,6 +16,7 @@ const DEFAULTS: Settings = {
   reducedMotion: 'system',
   haptics: true,
   reverseAids: true,
+  autoSuggest: false,
 };
 
 let current: Settings = { ...DEFAULTS, ...read<Partial<Settings>>('settings', {}) };

@@ -136,7 +136,11 @@ class BridgeView {
     this.endLink = h('div', { class: 'bline pending' });
     this.ghost = h('div', { class: 'bnode ghost', 'aria-hidden': 'true' }, '?');
     this.chainEl = h('div', { class: 'bchain', role: 'list' });
-    this.input = new WordInput((w) => dispatch({ t: 'add', word: w }), { placeholder: 'next link', label: 'link' });
+    this.input = new WordInput((w) => dispatch({ t: 'add', word: w }), {
+      placeholder: 'next link',
+      label: 'link',
+      words: () => this.s?.sem.vocab,
+    });
     this.hintBtn = h('button', { class: 'btn ghost', type: 'button', 'data-haptic': 'tick' }, 'hint');
     this.hintBtn.addEventListener('mousedown', (e) => e.preventDefault());
     this.hintBtn.addEventListener('click', () => dispatch({ t: 'hint' }));

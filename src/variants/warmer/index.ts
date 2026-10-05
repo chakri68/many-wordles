@@ -109,7 +109,11 @@ class WarmerView {
     );
     this.listHead = h('div', { class: 'wlist-head' }, h('span', {}, 'your guesses, closest first'), h('span', {}, 'rank'));
     this.list = h('div', { class: 'wlist', role: 'list', 'aria-label': 'Guesses, closest first' });
-    this.input = new WordInput((w) => dispatch({ t: 'guess', word: w }), { placeholder: 'type any word', label: 'guess' });
+    this.input = new WordInput((w) => dispatch({ t: 'guess', word: w }), {
+      placeholder: 'type any word',
+      label: 'guess',
+      words: () => this.s?.sem.vocab,
+    });
     this.hintBtn = h('button', { class: 'btn ghost', type: 'button', 'data-haptic': 'tick' }, 'hint');
     this.hintBtn.addEventListener('mousedown', (e) => e.preventDefault());
     this.hintBtn.addEventListener('click', () => dispatch({ t: 'hint' }));
