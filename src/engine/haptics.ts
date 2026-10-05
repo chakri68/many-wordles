@@ -3,13 +3,15 @@ import { getSettings } from './settings';
 
 export type Pattern = 'tick' | 'press' | 'detent' | 'warn' | 'error' | 'success';
 
+// Sub-~15ms pulses don't spin up a lot of Android motors (ERM, cheaper LRAs):
+// the tap was "haptic" on paper and silent in the hand. 20ms is the floor.
 const PATTERNS: Record<Pattern, number | number[]> = {
-  tick: 8,
-  press: 15,
-  detent: 5,
+  tick: 20,
+  press: 30,
+  detent: 12,
   warn: [20, 40, 20],
   error: [40, 60, 40],
-  success: [10, 50, 20],
+  success: [20, 50, 30],
 };
 
 const canVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator;

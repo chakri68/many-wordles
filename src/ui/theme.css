@@ -102,13 +102,17 @@ button {
 
 /* ---- shell ----------------------------------------------------------- */
 #app {
-  height: 100dvh;
+  /* Pinned to the real window, not 100dvh: an installed Android PWA with
+     3-button nav reports dvh a nav bar taller than the window, which buried
+     the bottom keyboard row under the system buttons. Fixed + inset tracks
+     the actual window, soft keyboard included (resizes-content). */
+  position: fixed;
+  inset: 0;
   max-width: 520px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  position: relative;
 }
 @media (min-width: 560px) {
   #app {
@@ -1153,6 +1157,8 @@ dialog.modal::backdrop {
   grid-auto-columns: 1fr;
   gap: 10px;
 }
+/* .modal-body p outranks a lone class and zeroed this margin */
+.modal-body .countdown,
 .countdown {
   text-align: center;
   font-size: 12px;
