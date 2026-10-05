@@ -1,6 +1,6 @@
 /// <reference types="vitest/config" />
 import { defineConfig, type Plugin } from 'vite';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const POOLS = new Set(['missing', 'define', 'events']);
@@ -132,10 +132,30 @@ function seo(): Plugin {
   };
 }
 
+/** write the built, hashed bundle into dist/sw.js so it's precached on install */
+function swAssets(): Plugin {
+  let outDir = 'dist';
+  return {
+    name: 'sw-assets',
+    apply: 'build',
+    configResolved(c) {
+      outDir = c.build.outDir;
+    },
+    closeBundle() {
+      const sw = `${outDir}/sw.js`;
+      if (!existsSync(sw)) return;
+      const assets = readdirSync(`${outDir}/assets`).sort().map((f) => `./assets/${f}`);
+      const src = readFileSync(sw, 'utf8');
+      if (!src.includes('const ASSETS = [];')) throw new Error('sw.js: ASSETS placeholder missing');
+      writeFileSync(sw, src.replace('const ASSETS = [];', `const ASSETS = ${JSON.stringify(assets)};`));
+    },
+  };
+}
+
 export default defineConfig({
   base: './', // any static host, any sub-path
   build: { target: 'es2022' },
   worker: { format: 'es' },
-  plugins: [contentReview(), seo()],
+  plugins: [contentReview(), seo(), swAssets()],
   test: { environment: 'node', setupFiles: ['src/test/setup.ts'] },
 });

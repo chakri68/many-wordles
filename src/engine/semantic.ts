@@ -179,7 +179,11 @@ export function pickBridge(sem: Sem, seed: number): BridgePuzzle {
   const pool = sem.answers.map((w) => sem.index.get(w)!).filter((i) => i != null && i < sem.common);
   const r = rng(seed);
   let fallback: BridgePuzzle | null = null;
-  for (let attempt = 0; attempt < 400; attempt++) {
+  // Past 400 tries, settle for the first 2-hopper. Only a day that found
+  // nothing in 400 ever gets that far, so the extra tries change no puzzle
+  // that has ever existed; they just turn a crash into a puzzle.
+  for (let attempt = 0; attempt < 4000; attempt++) {
+    if (attempt >= 400 && fallback) return fallback;
     const a = pool[randInt(r, pool.length)];
     const b = pool[randInt(r, pool.length)];
     if (a === b) continue;
@@ -189,5 +193,6 @@ export function pickBridge(sem: Sem, seed: number): BridgePuzzle {
     if (hops >= 3) return { start: a, end: b, path };
     if (hops === 2) fallback ??= { start: a, end: b, path };
   }
-  return fallback!;
+  if (fallback) return fallback;
+  throw new Error(`bridge: no puzzle for seed ${seed}`);
 }

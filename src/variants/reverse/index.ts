@@ -35,10 +35,17 @@ export interface ReverseState {
 export type ReverseAction = { t: 'cycle'; i: number } | { t: 'submit' } | { t: 'bot'; guess: string };
 
 let opener: Promise<string[]> | null = null;
+/** memoised, but a failure isn't: back online, the next open just works */
 const loadOpeners = () =>
-  (opener ??= fetch(new URL(import.meta.env.BASE_URL + 'reverse/openers.v1.json', location.href)).then((r) =>
-    r.json(),
-  ));
+  (opener ??= fetch(new URL(import.meta.env.BASE_URL + 'reverse/openers.v1.json', location.href))
+    .then((r) => {
+      if (!r.ok) throw new Error(`reverse/openers.v1.json: ${r.status}`);
+      return r.json() as Promise<string[]>;
+    })
+    .catch((e) => {
+      opener = null;
+      throw e;
+    }));
 
 const ctxCache = new WeakMap<Lists, SolverCtx>();
 export function ctxFor(lists: Lists): SolverCtx {

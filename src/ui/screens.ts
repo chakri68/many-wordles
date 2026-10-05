@@ -1,6 +1,6 @@
 // The shell's sheets: rules, stats / end-of-game, settings, archive.
 import type { AnyVariant } from '../variants/types';
-import { loadStats, type Stats } from '../engine/storage';
+import { liveStreak, loadStats, type Stats } from '../engine/storage';
 import { getSettings, setSettings, type Settings } from '../engine/settings';
 import { shareText } from '../engine/share';
 import { haptic } from '../engine/haptics';
@@ -23,7 +23,7 @@ function statBlock(s: Stats, buckets: string[], hi?: string) {
   const stat = (n: number | string, label: string) => h('div', { class: 'stat' }, h('b', {}, String(n)), h('span', {}, label));
   const max = Math.max(1, ...buckets.map((b) => s.histogram[b] ?? 0));
   return [
-    h('div', { class: 'stat-row' }, stat(s.played, 'played'), stat(pct, 'win %'), stat(s.streak, 'streak'), stat(s.maxStreak, 'best')),
+    h('div', { class: 'stat-row' }, stat(s.played, 'played'), stat(pct, 'win %'), stat(liveStreak(s, today()), 'streak'), stat(s.maxStreak, 'best')),
     h('h4', { class: 'section-h' }, 'distribution'),
     h(
       'div',
