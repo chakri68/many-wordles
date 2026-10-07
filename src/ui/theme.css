@@ -1045,6 +1045,12 @@ dialog.modal::backdrop {
 .muted {
   color: var(--muted);
 }
+.modal-body .credit {
+  font-size: 11px;
+}
+.credit a {
+  color: inherit;
+}
 @media (min-width: 640px) {
   dialog.modal[open] {
     align-items: center;

@@ -1,5 +1,5 @@
 import { dayLabel } from '../../engine/seed';
-import { loadSemantic, type Ranking, type Sem } from '../../engine/semantic';
+import { loadSemantic, semVersion, type Ranking, type Sem } from '../../engine/semantic';
 import { pickFromPool } from '../../engine/words';
 import type { Variant, Flash } from '../types';
 import { ranking } from '../semantic/client';
@@ -260,13 +260,14 @@ const warmer: Variant<WarmerState, WarmerAction> = {
       <li><span class="mini" data-k="Y">#</span> #2–100: very warm</li>
       <li><span class="mini" data-k="B">#</span> #1,000+: cold</li>
     </ul>
-    <p>Closeness comes from how words are used, not how they're spelled.
+    <p>Closeness comes from what words mean, not how they're spelled.
     <b>ocean</b> is near <b>sea</b>, nowhere near <b>octane</b>.</p>
     <p>Stuck? <b>Hint</b> drops a word halfway between your best guess and the answer.
-    Hints count as guesses.</p>`,
+    Hints count as guesses.</p>
+    <p class="muted credit">Word meanings: <a href="https://github.com/commonsense/conceptnet-numberbatch" target="_blank" rel="noopener">ConceptNet Numberbatch</a>, CC BY-SA 4.0.</p>`,
 
   async init(day) {
-    const sem = await loadSemantic();
+    const sem = await loadSemantic(semVersion(day));
     const answer = sem.index.get(pickFromPool(sem.answers, NO_DENY, 'warmer', day))!;
     const r = await ranking(sem, answer);
     return { day, sem, answer, r, guesses: [], focus: null, status: 'playing' };

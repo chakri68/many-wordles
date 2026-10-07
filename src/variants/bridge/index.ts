@@ -1,5 +1,5 @@
 import { dayLabel } from '../../engine/seed';
-import { dot, linked, loadSemantic, neighbours, type Ranking, type Sem } from '../../engine/semantic';
+import { dot, linked, loadSemantic, neighbours, semVersion, type Ranking, type Sem } from '../../engine/semantic';
 import type { Variant, Flash } from '../types';
 import { bridgePuzzle, ranking } from '../semantic/client';
 import { h, flip, animate, sleep, motionMs } from '../../ui/dom';
@@ -293,13 +293,14 @@ const bridge: Variant<BridgeState, BridgeAction> = {
     <p class="muted" style="font-size:13px">TREE → PINE → FOREST → … → SPACE</p>
     <p>A word that's too far from the previous link gets bounced. As soon as your latest word is
     close enough to the end, the bridge completes.</p>
-    <p>"Close" means the words show up in similar contexts: <b>flee</b> links to <b>escape</b>, not <b>thief</b>.
+    <p>"Close" means related in meaning: <b>flee</b> links to <b>escape</b>, not <b>thief</b>.
     A rejected word tells you how far off it was. Stuck? <b>Hint</b> adds a link for you (it's counted).</p>
     <p>Each word shows its rank <b>to the end word</b>: watch it drop as you get closer.
-    Fewer hops is better; par is the shortest bridge the bot could find.</p>`,
+    Fewer hops is better; par is the shortest bridge the bot could find.</p>
+    <p class="muted credit">Word meanings: <a href="https://github.com/commonsense/conceptnet-numberbatch" target="_blank" rel="noopener">ConceptNet Numberbatch</a>, CC BY-SA 4.0.</p>`,
 
   async init(day, seed) {
-    const sem = await loadSemantic();
+    const sem = await loadSemantic(semVersion(day));
     const p = await bridgePuzzle(sem, seed);
     const toEnd = await ranking(sem, p.end);
     return { day, sem, start: p.start, end: p.end, par: p.path, toEnd, chain: [], hinted: [], status: 'playing' };

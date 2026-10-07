@@ -1,7 +1,7 @@
 // Offline cache. Navigations: network-first (fresh deploys win), fall back to
 // cache. Everything else, incl. fonts + hosted tokens: stale-while-revalidate.
 // Word lists + the semantic table are frozen per version, so stale is always
-// correct. The 2 MB embedding table is cached on first use, not precached.
+// correct. The embedding tables (2-4 MB) are cached on first use, not precached.
 const CACHE = 'many-wordles-v3';
 const CORE = ['./', './index.html', './manifest.webmanifest', './favicon.svg',
   './words/answers.v1.txt', './words/allowed.v1.txt', './words/denylist.txt', './words/extra.v1.txt',
