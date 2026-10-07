@@ -3,6 +3,7 @@ import { loadGame, loadStats, liveStreak } from '../engine/storage';
 import { h } from './dom';
 import { ICONS } from './icons';
 import { APP_NAME, liveCountdown, today } from './clock';
+import { dayLabel } from '../engine/seed';
 import type { TileKind } from './board';
 
 const ART: Record<string, { word: string; kinds: TileKind[]; cls?: (string | null)[] }> = {
@@ -54,7 +55,7 @@ export function renderHub(opts: { enter: boolean; onSettings: () => void }): HTM
       h(
         'div',
         { class: 'card-foot' },
-        h('span', {}, `${v.name} #${day}`),
+        h('span', {}, dayLabel(day)),
         h('span', { class: 'streak' }, 'streak ', h('b', {}, String(streak))),
       ),
     );
@@ -79,7 +80,7 @@ export function renderHub(opts: { enter: boolean; onSettings: () => void }): HTM
     h(
       'footer',
       { class: 'hub-foot', style: `--i:${cards.length + 2}` },
-      h('span', {}, 'puzzle #', h('b', {}, String(day))),
+      h('span', {}, 'today is ', h('b', {}, dayLabel(day))),
       h('span', {}, 'next in ', cd),
     ),
   );

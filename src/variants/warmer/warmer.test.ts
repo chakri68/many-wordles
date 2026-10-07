@@ -28,7 +28,7 @@ describe('warmer', () => {
     expect(s.flash?.text).toMatch(/vocabulary/);
     s = reduce(s, { t: 'guess', word: s.sem.vocab[s.answer] });
     expect(s.status).toBe('won');
-    expect(warmer.shareText(s, 3)).toMatch(/^Warmer #3 · got it in 2\n[▁-█]{2}$/);
+    expect(warmer.shareText(s, 3)).toMatch(/^Warmer Oct 6 · got it in 2\n[▁-█]{2}$/);
   });
 
   it('hints halve the distance and never give the answer away', async () => {

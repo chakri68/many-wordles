@@ -2,6 +2,7 @@
 // target is earlier or later, roughly how far, and whether it shares a theme.
 // Pure binary search over ~650 events needs ~10 guesses; you get 7, so you
 // have to actually know some history (spec §9, phase 3).
+import { dayLabel } from '../../engine/seed';
 import type { EventItem, Cat } from '../../content/types';
 import { loadPool, poolReady } from '../../engine/content';
 import { pickIndex } from '../../engine/words';
@@ -366,7 +367,7 @@ const chrono: Variant<ChronoState, ChronoAction> & { available: () => boolean } 
       const f = feedback(t, s.events[g]);
       return (f.dir === 'earlier' ? '⬅️' : f.dir === 'later' ? '➡️' : '⏺️') + BAND_EMOJI[f.band];
     });
-    return `Before/After #${day} ${s.status === 'won' ? s.guesses.length : 'X'}/7\n${marks.join(' ')}`;
+    return `Before/After ${dayLabel(day)} ${s.status === 'won' ? s.guesses.length : 'X'}/7\n${marks.join(' ')}`;
   },
 };
 

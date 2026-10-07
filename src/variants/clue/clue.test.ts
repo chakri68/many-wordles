@@ -28,7 +28,7 @@ describe('clue games', () => {
     for (let k = 0; k < 8; k++) s = reduceClue(s, { t: 'skip' });
     expect(s.status).toBe('lost');
     expect(s.misses).toHaveLength(6);
-    expect(define.shareText(s, 2)).toBe('Define #2 X/6\n⬛⬛⬛⬛⬛⬛');
+    expect(define.shareText(s, 2)).toBe('Define Oct 5 X/6\n⬛⬛⬛⬛⬛⬛');
   });
 
   it('accepts Indian words GloVe never learned', async () => {

@@ -1,3 +1,4 @@
+import { dayLabel } from '../../engine/seed';
 import { dot, linked, loadSemantic, neighbours, type Ranking, type Sem } from '../../engine/semantic';
 import type { Variant, Flash } from '../types';
 import { bridgePuzzle, ranking } from '../semantic/client';
@@ -343,11 +344,11 @@ const bridge: Variant<BridgeState, BridgeAction> = {
   },
   shareText(s, day) {
     const route = `${W(s, s.start)} → ${W(s, s.end)}`;
-    if (s.status !== 'won') return `Bridge #${day} · ${route} · gave up after ${s.chain.length} links`;
+    if (s.status !== 'won') return `Bridge ${dayLabel(day)} · ${route} · gave up after ${s.chain.length} links`;
     const blocks = links(s).map(([a, b]) => block(strength(s, a, b))).join('');
     const n = s.hinted.length;
     const hints = n ? ` · ${n} hint${n > 1 ? 's' : ''}` : '';
-    return `Bridge #${day} · ${route} in ${hops(s)} hops (par ${parHops(s)})${hints}\n${blocks}`;
+    return `Bridge ${dayLabel(day)} · ${route} in ${hops(s)} hops (par ${parHops(s)})${hints}\n${blocks}`;
   },
 };
 

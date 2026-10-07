@@ -68,7 +68,7 @@ describe('decay', () => {
     let s = await fresh(2);
     s = play(s, ['crane', 'pilot', 'mushy', s.answer]);
     const txt = decay.shareText(s, 2);
-    expect(txt.split('\n')[0]).toBe(`Decay #2 ${s.rows.length}/6`);
+    expect(txt.split('\n')[0]).toBe(`Decay Oct 5 ${s.rows.length}/6`);
     expect(txt).toContain('▫️');
   });
 });

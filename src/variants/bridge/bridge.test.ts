@@ -45,7 +45,7 @@ describe('bridge', () => {
     let s = await fresh(8);
     for (const w of s.par.slice(1, -1)) s = reduce(s, { t: 'add', word: s.sem.vocab[w] });
     const [head, blocks] = bridge.shareText(s, 8).split('\n');
-    expect(head).toMatch(/^Bridge #8 · [A-Z]+ → [A-Z]+ in \d hops \(par \d\)$/);
+    expect(head).toMatch(/^Bridge Oct 11 · [A-Z]+ → [A-Z]+ in \d hops \(par \d\)$/);
     expect([...blocks]).toHaveLength(hops(s));
   });
 });

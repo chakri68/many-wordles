@@ -61,8 +61,20 @@ select {
 
 button {
   cursor: pointer;
+}
+
+/* it's a game, not a document: no stray highlights from a double tap or a
+   long press. Fields stay selectable or typing gets weird on iOS. */
+html {
   -webkit-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none;
+}
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
 }
 
 :focus {
@@ -331,9 +343,6 @@ button {
   font-size: calc(var(--tile) * 0.5);
   line-height: 1;
   text-transform: uppercase;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
   backface-visibility: hidden;
   transition: background-color 0.15s, color 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
@@ -948,8 +957,6 @@ dialog.modal::backdrop {
 }
 .modal-panel.dragging {
   transition: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
 .sheet-grab {
   height: 22px;
@@ -1246,35 +1253,73 @@ dialog.modal::backdrop {
 }
 
 /* archive */
-.days {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
-  gap: 6px;
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 0 8px;
 }
-.days a {
+.cal-title {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.cal-head .icon-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.cal {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+.cal .wd {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  padding-bottom: 2px;
+}
+.cal a,
+.cal .off {
   display: grid;
   place-items: center;
-  height: 44px;
+  height: 40px;
   border-radius: 8px;
-  border: none;
+  font-variant-numeric: tabular-nums;
+}
+.cal a {
   color: var(--text);
   text-decoration: none;
-  font-variant-numeric: tabular-nums;
-  transition: background 0.12s;
   background: var(--raise-1);
+  transition: background 0.12s;
 }
-.days a:hover {
-
+.cal a:hover {
   background: var(--raise-3);
 }
-.days a.on {
-
+.cal .off {
+  color: var(--muted);
+  opacity: 0.35;
+}
+.cal a.ahead {
+  color: var(--muted);
+}
+.cal a.done {
+  color: var(--text);
+  background: var(--y-fill);
+}
+.cal a.lost {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.cal a.progress {
+  box-shadow: inset 0 0 0 1px var(--accent-dim);
+}
+.cal a.today {
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.cal a.on {
   color: var(--accent);
   font-weight: 700;
   background: var(--accent-soft);
-}
-.days a.done {
-  background: var(--y-fill);
 }
 
 /* ---- toasts ----------------------------------------------------------- */
@@ -2404,4 +2449,8 @@ dialog ~ .toasts,
 }
 [data-rm] .route-progress.on {
   transform: scaleX(0.6);
+}
+a.btn {
+  text-decoration: none;
+  text-align: center;
 }

@@ -46,6 +46,6 @@ describe('before/after', () => {
     s = reduce(s, { t: 'guess', name: s.events[other].name });
     s = reduce(s, { t: 'guess', name: s.events[s.target].name.toUpperCase() });
     expect(s.status).toBe('won');
-    expect(chrono.shareText(s, 4)).toMatch(/^Before\/After #4 2\/7\n(⬅️|➡️|⏺️)(🟩|🟨|🟧|🟥|⬛) 🎯$/);
+    expect(chrono.shareText(s, 4)).toMatch(/^Before\/After Oct 7 2\/7\n(⬅️|➡️|⏺️)(🟩|🟨|🟧|🟥|⬛) 🎯$/);
   });
 });

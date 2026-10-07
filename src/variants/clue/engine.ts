@@ -1,5 +1,6 @@
 // One engine, two games. Missing and Define are the same loop: a clue list
 // ordered vague -> specific, one more clue per miss, six misses and you're out.
+import { dayLabel } from '../../engine/seed';
 import type { ClueItem, PoolId } from '../../content/types';
 import { CLUE_COUNT, BLANK } from '../../content/validate';
 import { loadPool, poolReady } from '../../engine/content';
@@ -239,7 +240,7 @@ export function makeClueVariant(cfg: Cfg): Variant<ClueState, ClueAction> & { av
       return { title: 'Stumped.', detail: `It was ${w}.` };
     },
     shareText(s, day) {
-      return `${cfg.name} #${day} ${s.status === 'won' ? cluesUsed(s) : 'X'}/6\n${shareRow(s)}`;
+      return `${cfg.name} ${dayLabel(day)} ${s.status === 'won' ? cluesUsed(s) : 'X'}/6\n${shareRow(s)}`;
     },
   };
 }

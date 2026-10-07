@@ -28,6 +28,9 @@ export function remove(key: string): void {
 }
 
 // ---- game log -------------------------------------------------------------
+// One log per (slot, day), so hopping between archive days doesn't wipe the
+// one you left. Today's games and archive games live in separate slots: a
+// future puzzle you played ahead starts fresh (and counts) once it's today.
 
 export interface SavedGame<A> {
   day: number;
@@ -35,12 +38,29 @@ export interface SavedGame<A> {
 }
 
 export function loadGame<A>(variant: string, day: number): A[] {
+  const own = read<A[] | null>(`${variant}:game:${day}`, null);
+  if (Array.isArray(own)) return own;
+  // pre-per-day saves: a single slot holding whichever day was last played
   const g = read<SavedGame<A> | null>(`${variant}:game`, null);
   return g && g.day === day && Array.isArray(g.actions) ? g.actions : [];
 }
 
 export function saveGame<A>(variant: string, day: number, actions: A[]): void {
-  write(`${variant}:game`, { day, actions } satisfies SavedGame<A>);
+  write(`${variant}:game:${day}`, actions);
+}
+
+// ---- per-day results ------------------------------------------------------
+// Every finished game, today's or archive, so the archive can mark what's done.
+
+export type DayResult = { won: boolean; label: string };
+
+export function loadResults(variant: string): Record<number, DayResult> {
+  const r = read<Record<number, DayResult> | null>(`${variant}:results`, null);
+  return r && typeof r === 'object' ? r : {};
+}
+
+export function saveResult(variant: string, day: number, r: DayResult): void {
+  write(`${variant}:results`, { ...loadResults(variant), [day]: { won: r.won, label: r.label } });
 }
 
 // ---- stats ----------------------------------------------------------------

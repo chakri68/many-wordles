@@ -1,6 +1,6 @@
 // The shell's sheets: rules, stats / end-of-game, settings, archive.
 import type { AnyVariant } from '../variants/types';
-import { liveStreak, loadStats, type Stats } from '../engine/storage';
+import { liveStreak, loadGame, loadResults, loadStats, type Stats } from '../engine/storage';
 import { getSettings, setSettings, type Settings } from '../engine/settings';
 import { shareText } from '../engine/share';
 import { haptic } from '../engine/haptics';
@@ -8,7 +8,8 @@ import { h } from './dom';
 import { ICONS } from './icons';
 import { openModal } from './modal';
 import { toast } from './toast';
-import { gameUrl, liveCountdown, today } from './clock';
+import { dayIndex, dayLabel, dateOf, MONTHS } from '../engine/seed';
+import { gameUrl, hashFor, liveCountdown, today } from './clock';
 
 export function rulesModal(v: AnyVariant, onClose?: () => void) {
   const body = h('div', { class: 'rules', html: v.rulesHtml });
@@ -64,7 +65,16 @@ export function statsModal(e: EndInfo) {
     const extra = v.endExtra?.(state);
     if (extra) body.append(extra);
   }
-  if (archive) body.append(h('p', { class: 'notice' }, `archive puzzle #${day}. it doesn't touch your stats or streak.`));
+  if (archive)
+    body.append(
+      h(
+        'p',
+        { class: 'notice' },
+        day > today()
+          ? `${dayLabel(day)}, from the future. doesn't touch your stats, and it'll be a fresh game on the day.`
+          : `${dayLabel(day)}, from the archive. doesn't touch your stats or streak.`,
+      ),
+    );
 
   body.append(h('h4', { class: 'section-h' }, `${v.name} stats`), ...statBlock(s, v.buckets, over && !archive && s.lastDay === day ? v.bucketOf(state) : undefined));
 
@@ -82,15 +92,14 @@ export function statsModal(e: EndInfo) {
   const hub = h('button', { class: 'btn' }, '‹ all games');
   hub.addEventListener('click', () => m.close().then(() => e.go('#/')));
   const row2 = h('div', { class: 'row2' }, hub);
-  if (day > 1) {
-    const prev = h('button', { class: 'btn' }, `play #${day - 1}`);
-    prev.addEventListener('click', () => m.close().then(() => e.go(`#/${v.id}?day=${day - 1}`)));
-    row2.append(prev);
-  } else if (archive) {
-    const t = h('button', { class: 'btn' }, 'today');
-    t.addEventListener('click', () => m.close().then(() => e.go(`#/${v.id}`)));
-    row2.append(t);
-  }
+  const jump = (label: string, hash: string) => {
+    const b = h('button', { class: 'btn' }, label);
+    b.addEventListener('click', () => m.close().then(() => e.go(hash)));
+    row2.append(b);
+  };
+  if (day > 1) jump(`‹ ${dayLabel(day - 1)}`, hashFor(v.id, day - 1));
+  else if (archive) jump('today', `#/${v.id}`);
+  jump(`${dayLabel(day + 1)} ›`, hashFor(v.id, day + 1));
   actions.append(row2);
   body.append(actions);
 
@@ -98,7 +107,7 @@ export function statsModal(e: EndInfo) {
   liveCountdown(cd);
   body.append(h('p', { class: 'countdown' }, `next ${v.name} in `, cd));
 
-  m = openModal(over ? `${v.name} #${day}` : `${v.name} stats`, body);
+  m = openModal(over ? `${v.name} · ${archive ? dayLabel(day) : 'today'}` : `${v.name} stats`, body);
   return m;
 }
 
@@ -149,24 +158,87 @@ export function settingsModal() {
   openModal('settings', body);
 }
 
+const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+/** A month calendar. Every day since launch is open, and so is every day after today. */
 export function archiveModal(v: AnyVariant, current: number, go: (hash: string) => void) {
   const t = today();
-  const s = loadStats(v.id);
-  const grid = h('div', { class: 'days' });
-  for (let d = t; d >= 1; d--) {
-    const a = h('a', {
-      href: d === t ? `#/${v.id}` : `#/${v.id}?day=${d}`,
-      class: `${d === current ? 'on' : ''} ${d === s.lastResult?.day ? 'done' : ''}`,
-      'data-haptic': 'tick',
-    }, `#${d}`);
-    grid.append(a);
-  }
-  const m = openModal(`${v.name} archive`, h('div', {}, h('p', { class: 'muted' }, 'every past puzzle, regenerated on the spot. archive games are just for fun.'), grid));
-  grid.addEventListener('click', (e) => {
+  const results = loadResults(v.id);
+  // stats.lastResult predates the results map, so it still counts
+  const last = loadStats(v.id).lastResult;
+  if (last && !results[last.day]) results[last.day] = last;
+
+  const first = dateOf(1);
+  const at = dateOf(current);
+  let y = at.getFullYear();
+  let mo = at.getMonth();
+
+  const title = h('span', { class: 'cal-title', 'aria-live': 'polite' });
+  const prev = h('button', { class: 'icon-btn', 'aria-label': 'Previous month', 'data-haptic': 'tick' }, '‹');
+  const next = h('button', { class: 'icon-btn', 'aria-label': 'Next month', 'data-haptic': 'tick' }, '›');
+  const grid = h('div', { class: 'cal', role: 'grid' });
+
+  const cell = (d: number) => {
+    const r = results[d];
+    const started = !r && (loadGame(`${v.id}:archive`, d).length > 0 || loadGame(v.id, d).length > 0);
+    const state = r ? (r.won ? 'done' : 'lost') : started ? 'progress' : '';
+    const note = d === t ? ', today' : r ? (r.won ? ', solved' : ', missed') : started ? ', in progress' : '';
+    return h(
+      'a',
+      {
+        href: hashFor(v.id, d),
+        class: `${d === current ? 'on' : ''} ${d === t ? 'today' : ''} ${d > t ? 'ahead' : ''} ${state}`,
+        'aria-label': `${dayLabel(d)}${note}`,
+        'data-haptic': 'tick',
+      },
+      String(dateOf(d).getDate()),
+    );
+  };
+
+  const paint = () => {
+    title.textContent = `${MONTHS[mo]} ${y}`;
+    prev.disabled = y < first.getFullYear() || (y === first.getFullYear() && mo <= first.getMonth());
+    const lead = new Date(y, mo, 1).getDay();
+    const len = new Date(y, mo + 1, 0).getDate();
+    grid.replaceChildren(
+      ...WEEKDAYS.map((w) => h('span', { class: 'wd', 'aria-hidden': 'true' }, w)),
+      ...Array.from({ length: lead }, () => h('span')),
+      ...Array.from({ length: len }, (_, i) => {
+        const d = dayIndex(new Date(y, mo, i + 1));
+        // before launch there was nothing to play
+        return d < 1 ? h('span', { class: 'off' }, String(i + 1)) : cell(d);
+      }),
+    );
+  };
+  const shift = (by: number) => {
+    const d = new Date(y, mo + by, 1);
+    y = d.getFullYear();
+    mo = d.getMonth();
+    paint();
+  };
+  prev.addEventListener('click', () => shift(-1));
+  next.addEventListener('click', () => shift(1));
+  paint();
+
+  const todayBtn = h('a', { class: 'btn', href: `#/${v.id}`, 'data-haptic': 'press' }, 'back to today');
+  const m = openModal(
+    `${v.name} archive`,
+    h(
+      'div',
+      {},
+      h('p', { class: 'muted' }, 'any day, past or future. only today counts toward stats.'),
+      h('div', { class: 'cal-head' }, prev, title, next),
+      grid,
+      current !== t && h('div', { class: 'end-actions' }, todayBtn),
+    ),
+  );
+  const pick = (e: Event) => {
     const a = (e.target as Element).closest('a');
     if (!a) return;
     e.preventDefault();
     haptic('tick');
     m.close().then(() => go(a.getAttribute('href')!));
-  });
+  };
+  grid.addEventListener('click', pick);
+  todayBtn.addEventListener('click', pick);
 }

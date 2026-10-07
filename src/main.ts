@@ -1,8 +1,8 @@
 import './ui/theme.css';
 import { apply, reducedMotion } from './engine/settings';
 import { wireDeclarativeHaptics } from './engine/haptics';
-import { seedFor } from './engine/seed';
-import { loadGame, saveGame, loadStats, recordResult, saveStats, read, write } from './engine/storage';
+import { dayLabel, dayOfIso, seedFor } from './engine/seed';
+import { loadGame, saveGame, loadStats, recordResult, saveStats, saveResult, read, write } from './engine/storage';
 import { loadLists } from './engine/words';
 import { byId } from './variants/registry';
 import type { AnyVariant } from './variants/types';
@@ -27,8 +27,10 @@ function parse() {
   const raw = location.hash.slice(1) || '/';
   const [path, q] = raw.split('?');
   const id = path.replace(/^\/+|\/+$/g, '');
-  const d = new URLSearchParams(q ?? '').get('day');
-  return { id: id || null, day: d == null ? null : Number(d) };
+  const p = new URLSearchParams(q ?? '');
+  const date = p.get('date');
+  const n = p.get('day'); // old links carried the puzzle number
+  return { id: id || null, day: date != null ? (dayOfIso(date) ?? NaN) : n != null ? Number(n) : null };
 }
 
 export function go(hash: string) {
@@ -67,7 +69,8 @@ async function route() {
   }
   const t = today();
   let d = day ?? t;
-  if (!Number.isInteger(d) || d < 1 || (!import.meta.env.DEV && d > t)) d = t;
+  // future days are fair game: every puzzle is a pure function of its number
+  if (!Number.isInteger(d) || d < 1) d = t;
   const stop = loading(v.id);
   try {
     const mount = await prepareGame(v, d, t);
@@ -133,7 +136,10 @@ async function prepareGame(v: AnyVariant, day: number, t: number) {
   const key = archive ? `${v.id}:archive` : v.id;
   let state = await v.init(day, seedFor(v.id, day));
   const log: unknown[] = [];
-  for (const a of loadGame(key, day)) {
+  // a past day you played as "today" opens where you left it
+  let saved = loadGame<unknown>(key, day);
+  if (archive && !saved.length) saved = loadGame(v.id, day);
+  for (const a of saved) {
     const next = v.reduce(state, a);
     if (next !== state) {
       state = next;
@@ -146,8 +152,8 @@ async function prepareGame(v: AnyVariant, day: number, t: number) {
     back.addEventListener('click', () => go('#/'));
     const dayBtn = h(
       'button',
-      { class: `daychip ${archive ? 'archive' : ''}`, 'aria-label': `Puzzle ${day}. Open archive`, 'data-haptic': 'tick' },
-      `#${day}`,
+      { class: `daychip ${archive ? 'archive' : ''}`, 'aria-label': `${dayLabel(day)}. Pick another day`, 'data-haptic': 'tick' },
+      archive ? dayLabel(day) : 'today',
     );
     dayBtn.addEventListener('click', () => archiveModal(v, day, go));
     const btn = (icon: string, label: string, fn: () => void) => {
@@ -157,7 +163,7 @@ async function prepareGame(v: AnyVariant, day: number, t: number) {
     };
     const openEnd = () => statsModal({ v, state, day, archive, over: v.isOver(state), go });
 
-    document.title = `${v.name} #${day} · Many Wordles`;
+    document.title = `${v.name}${archive ? ` · ${dayLabel(day)}` : ''} · Many Wordles`;
     const main = h('main', { class: 'game-main' });
     const page = h(
       'div',
@@ -181,7 +187,9 @@ async function prepareGame(v: AnyVariant, day: number, t: number) {
 
     let alive = true;
     const finish = async (settled: Promise<void>) => {
-      if (!archive) saveStats(v.id, recordResult(loadStats(v.id), day, v.result(state), v.bucketOf(state)));
+      const r = v.result(state);
+      saveResult(v.id, day, r);
+      if (!archive) saveStats(v.id, recordResult(loadStats(v.id), day, r, v.bucketOf(state)));
       await settled;
       await sleep(motionMs(450));
       if (alive) openEnd();

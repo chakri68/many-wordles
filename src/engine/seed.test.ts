@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dayIndex, fnv1a, seedFor, EPOCH } from './seed';
+import { dateOf, dayIndex, dayLabel, dayOfIso, fnv1a, isoOf, seedFor, EPOCH } from './seed';
 import { rng, shuffledIndices, weightedSample } from './rng';
 
 describe('seed + rng', () => {
@@ -17,6 +17,18 @@ describe('seed + rng', () => {
     expect(dayIndex(new Date(y, m - 1, d + 365))).toBe(366);
     // across a DST change in either hemisphere
     expect(dayIndex(new Date(2027, 2, 30, 12)) - dayIndex(new Date(2027, 2, 20, 12))).toBe(10);
+  });
+
+  it('dates round-trip through puzzle numbers', () => {
+    expect(isoOf(1)).toBe(EPOCH);
+    expect(dayOfIso(EPOCH)).toBe(1);
+    for (const d of [1, 2, 31, 150, 400, 1000]) {
+      expect(dayOfIso(isoOf(d))).toBe(d);
+      expect(dayIndex(dateOf(d))).toBe(d);
+    }
+    expect(dayLabel(4)).toBe('Oct 7');
+    expect(dayOfIso('2027-02-31')).toBeNull();
+    expect(dayOfIso('yesterday')).toBeNull();
   });
 
   it('mulberry32 stream is pinned', () => {

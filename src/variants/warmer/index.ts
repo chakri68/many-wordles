@@ -1,3 +1,4 @@
+import { dayLabel } from '../../engine/seed';
 import { loadSemantic, type Ranking, type Sem } from '../../engine/semantic';
 import { pickFromPool } from '../../engine/words';
 import type { Variant, Flash } from '../types';
@@ -314,8 +315,8 @@ const warmer: Variant<WarmerState, WarmerAction> = {
     const b = best(s);
     const head =
       s.status === 'won'
-        ? `Warmer #${day} · got it in ${s.guesses.length}${tail}`
-        : `Warmer #${day} · gave up after ${s.guesses.length}, best #${Number.isFinite(b) ? b : '–'}`;
+        ? `Warmer ${dayLabel(day)} · got it in ${s.guesses.length}${tail}`
+        : `Warmer ${dayLabel(day)} · gave up after ${s.guesses.length}, best #${Number.isFinite(b) ? b : '–'}`;
     return `${head}\n${pathLine(s)}`;
   },
 };

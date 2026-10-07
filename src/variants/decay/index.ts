@@ -1,3 +1,4 @@
+import { dayLabel } from '../../engine/seed';
 import { loadLists, answerFor, type Lists } from '../../engine/words';
 import { score } from '../../engine/score';
 import { EMOJI } from '../../engine/pattern';
@@ -124,7 +125,7 @@ const decay: Variant<DecayState, DecayAction> = {
   },
 
   shareText(s, day) {
-    const head = `Decay #${day} ${s.status === 'won' ? s.rows.length : 'X'}/6`;
+    const head = `Decay ${dayLabel(day)} ${s.status === 'won' ? s.rows.length : 'X'}/6`;
     const lines = s.rows.map((r) => r.marks.map((m, c) => (r.decayed[c] ? '▫️' : EMOJI[m])).join(''));
     return [head, ...lines].join('\n');
   },

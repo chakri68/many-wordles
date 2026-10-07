@@ -61,7 +61,7 @@ describe('suspect', () => {
     expect(s.status).toBe('won');
     expect(liarsCaught(s)).toEqual({ caught: 1, total: 3 });
     const lines = suspect.shareText(s, 9).split('\n');
-    expect(lines[0]).toBe('Suspect #9 4/8 · 🕵️ 1/3 liars caught');
+    expect(lines[0]).toBe('Suspect Oct 12 4/8 · 🕵️ 1/3 liars caught');
     expect(lines[1].endsWith(' ✓')).toBe(true);
     expect(lines[2].endsWith(' ✓')).toBe(false);
     // locked after the game

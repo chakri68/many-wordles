@@ -1,3 +1,4 @@
+import { dayLabel } from '../../engine/seed';
 import { loadLists, type Lists } from '../../engine/words';
 import { score, type Mark } from '../../engine/score';
 import { encode, EMOJI, ALL_GREEN } from '../../engine/pattern';
@@ -373,8 +374,8 @@ const reverse: Variant<ReverseState, ReverseAction> = {
   shareText(s, day) {
     const n = s.rounds.length;
     const head = perfect(s)
-      ? `Reverse #${day}: survived all ${MAX_ROUNDS} rounds, the bot gave up 🏆`
-      : `Reverse #${day}: kept the bot guessing for ${n} round${n === 1 ? '' : 's'} 🤖`;
+      ? `Reverse ${dayLabel(day)}: survived all ${MAX_ROUNDS} rounds, the bot gave up 🏆`
+      : `Reverse ${dayLabel(day)}: kept the bot guessing for ${n} round${n === 1 ? '' : 's'} 🤖`;
     const lines = s.rounds.map((r) => {
       const e = r.marks.map((m) => EMOJI[m]).join('');
       return r.marks.every((m) => m === 'G') ? e : `${e}  ${r.before}→${r.after}`;
