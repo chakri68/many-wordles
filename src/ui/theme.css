@@ -602,6 +602,11 @@ textarea {
 .keyboard.locked .key {
   pointer-events: none;
 }
+@media (hover: hover) {
+  .key:hover {
+    filter: brightness(1.25);
+  }
+}
 
 /* ---- reverse ----------------------------------------------------------- */
 .rev-top {
@@ -903,6 +908,40 @@ textarea {
   from {
     opacity: 0;
     transform: translateY(14px);
+  }
+}
+
+/* Wide screens: the hub breaks out of the phone column into a card grid.
+   #app goes full width so the scrollbar sits at the window edge; the content
+   column is padding, not max-width. Game pages keep the narrow column. */
+@media (min-width: 720px) {
+  #app:has(> .hub) {
+    max-width: none;
+  }
+  .hub {
+    --hub-w: 1160px;
+    padding-inline: max(24px, (100% - var(--hub-w)) / 2);
+    padding-top: calc(env(safe-area-inset-top) + 20px);
+  }
+  .hub-head {
+    padding: 4px 0 30px;
+  }
+  .logo {
+    font-size: 28px;
+  }
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  /* taglines differ in length; the spare height goes to them so art and
+     footers line up across a row */
+  .card {
+    grid-template-rows: auto 1fr auto auto;
+  }
+}
+@media (min-width: 1100px) {
+  .cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
