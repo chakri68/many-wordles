@@ -86,19 +86,26 @@ textarea {
   outline-offset: 2px;
 }
 
-/* ---- scrollbars (WebKit custom; Firefox gets thin) ------------------- */
+/* ---- scrollbars ------------------------------------------------------
+   Thin thumb, hidden until its own pane is hovered or actively scrolling
+   (.scrolling is toggled by wireScrollbars in dom.ts). Firefox gets thin. */
 *::-webkit-scrollbar {
-  width: 14px;
-  height: 14px;
+  width: 8px;
+  height: 8px;
 }
 *::-webkit-scrollbar-track {
   margin: 8px 0;
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: var(--scroll-thumb);
+  background: transparent;
   border-radius: 999px;
-  border: 4px solid transparent;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*:hover::-webkit-scrollbar-thumb,
+.scrolling::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
   background-clip: padding-box;
 }
 *::-webkit-scrollbar-thumb:hover {

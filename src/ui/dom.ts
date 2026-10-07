@@ -94,3 +94,18 @@ export function onGameKey(handler: (e: KeyboardEvent) => void): () => void {
   window.addEventListener('keydown', fn);
   return () => window.removeEventListener('keydown', fn);
 }
+
+/** Flags whichever pane is scrolling so its (otherwise hidden) scrollbar shows, then hides it again once idle. */
+export function wireScrollbars(idleMs = 900) {
+  const timers = new WeakMap<Element, number>();
+  document.addEventListener(
+    'scroll',
+    (e) => {
+      const el = e.target instanceof Element ? e.target : document.documentElement;
+      el.classList.add('scrolling');
+      clearTimeout(timers.get(el));
+      timers.set(el, window.setTimeout(() => el.classList.remove('scrolling'), idleMs));
+    },
+    { capture: true, passive: true },
+  );
+}

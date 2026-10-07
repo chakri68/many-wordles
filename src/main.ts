@@ -6,7 +6,7 @@ import { loadGame, saveGame, loadStats, recordResult, saveStats, saveResult, rea
 import { loadLists } from './engine/words';
 import { byId } from './variants/registry';
 import type { AnyVariant } from './variants/types';
-import { h, motionMs, sleep } from './ui/dom';
+import { h, motionMs, sleep, wireScrollbars } from './ui/dom';
 import { ICONS } from './ui/icons';
 import { closeAllModals } from './ui/modal';
 import { toast } from './ui/toast';
@@ -16,6 +16,7 @@ import { archiveModal, rulesModal, settingsModal, statsModal } from './ui/screen
 
 apply();
 wireDeclarativeHaptics();
+wireScrollbars();
 
 const app = document.getElementById('app')!;
 let session: { destroy(): void } | null = null;
