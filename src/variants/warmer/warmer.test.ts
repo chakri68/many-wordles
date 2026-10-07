@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import warmer, { reduce, best, pathLine } from './index';
 import { seedFor } from '../../engine/seed';
-import { rankFrom, SEM_V2_FROM } from '../../engine/semantic';
+import { rankFrom } from '../../engine/semantic';
 
 const fresh = (day = 1) => warmer.init(day, seedFor('warmer', day));
 
@@ -53,10 +53,5 @@ describe('warmer', () => {
     let s = await fresh(5);
     for (const w of s.sem.vocab.slice(500, 560)) s = reduce(s, { t: 'guess', word: w });
     expect([...pathLine(s)]).toHaveLength(24);
-  });
-
-  it('switches tables on the switch day', async () => {
-    expect((await fresh(SEM_V2_FROM - 1)).sem.v).toBe('v1');
-    expect((await fresh(SEM_V2_FROM)).sem.v).toBe('v2');
   });
 });

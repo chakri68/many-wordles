@@ -21,11 +21,18 @@ Pipeline:
   2. centre, PCA 300 -> 128 dims (64 kept only ~65% of each word's true
      top-10; 128 keeps ~82%, for 3.8 MB instead of 1.9)
   3. L2-normalise, then int8 with one global scale, exactly like v1
-  4. answers = v1's pool minus words without a vector and the DROP list
+  4. answers = v1's pool minus words without a vector, the DROP list, and
+     anything that isn't a base-form noun or verb (see noun_or_verb).
+     SEEMED and SEVENTH -> SUBURBAN made it obvious: adjectives and
+     adverbs have mushy neighbourhoods (strangely, oddly, somewhat...)
+     and are miserable to guess.
 
-usage: python3 scripts/build-embeddings-v2.py <numberbatch-en-19.08.txt.gz>
+WordNet 3.0 (Princeton licence) for the part-of-speech check, unzipped:
+  https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/wordnet.zip
+
+usage: python3 scripts/build-embeddings-v2.py <numberbatch-en-19.08.txt.gz> <wordnet-dir>
 """
-import gzip, json, sys, pathlib
+import collections, gzip, json, sys, pathlib
 import numpy as np
 
 DIMS, COMMON = 128, 10000
@@ -48,11 +55,44 @@ jimmy khan lynch maria martin matt mike miller morocco nick oxford pentagon pete
 democrat rick roger roman shanghai smith soviet communist terry tony turner villa wales welsh wright
 northeastern northwestern southeastern southwestern holocaust
 spokesman spokeswoman lawmaker chairman businessman
+inter nobody yesterday plenty advisory mainstream stuff abortion assassination
 """.split())
 
 
+def noun_or_verb(wn_dir):
+    """
+    Keep a word only if WordNet lists it as a lemma (so not SEEMED, not
+    DATES) and its sense-tagged usage leans noun/verb over adjective/adverb.
+    Tag counts come from SemCor via index.sense; words nobody tagged fall
+    back to "has any noun or verb sense at all".
+    """
+    poses = collections.defaultdict(set)
+    for pos in ("noun", "verb", "adj", "adv"):
+        for line in open(f"{wn_dir}/index.{pos}"):
+            if not line.startswith(" "):  # licence header lines are indented
+                poses[line.split()[0]].add(pos)
+    kind = {"1": "n", "2": "v", "3": "a", "4": "r", "5": "a"}  # 5 = adjective satellite
+    tags = collections.defaultdict(collections.Counter)
+    for line in open(f"{wn_dir}/index.sense"):
+        key, _, _, cnt = line.split()
+        lemma, rest = key.split("%")
+        tags[lemma][kind[rest[0]]] += int(cnt)
+
+    def ok(w):
+        if w not in poses:
+            return False
+        c = tags[w]
+        nv, ar = c["n"] + c["v"], c["a"] + c["r"]
+        if nv == ar == 0:
+            return bool(poses[w] & {"noun", "verb"})
+        return nv > ar
+
+    return ok
+
+
 def main():
-    nb_path = sys.argv[1]
+    nb_path, wn_dir = sys.argv[1], sys.argv[2]
+    keep = noun_or_verb(wn_dir)
     v1 = (OUT / "vocab.v1.txt").read_text().split()
     want = set(v1)
     got = {}
@@ -75,7 +115,7 @@ def main():
     bridge = int(BRIDGE_COS * scale2)
 
     vocab = set(words)
-    answers = sorted(w for w in (OUT / "answers.v1.txt").read_text().split() if w in vocab and w not in DROP)
+    answers = sorted(w for w in (OUT / "answers.v1.txt").read_text().split() if w in vocab and w not in DROP and keep(w))
 
     # report the graph the game will actually see (int maths, like the client)
     C = Q[:COMMON].astype(np.int32)

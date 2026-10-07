@@ -1,5 +1,5 @@
 import { dayLabel } from '../../engine/seed';
-import { loadSemantic, semVersion, type Ranking, type Sem } from '../../engine/semantic';
+import { loadSemantic, type Ranking, type Sem } from '../../engine/semantic';
 import { pickFromPool } from '../../engine/words';
 import type { Variant, Flash } from '../types';
 import { ranking } from '../semantic/client';
@@ -267,7 +267,7 @@ const warmer: Variant<WarmerState, WarmerAction> = {
     <p class="muted credit">Word meanings: <a href="https://github.com/commonsense/conceptnet-numberbatch" target="_blank" rel="noopener">ConceptNet Numberbatch</a>, CC BY-SA 4.0.</p>`,
 
   async init(day) {
-    const sem = await loadSemantic(semVersion(day));
+    const sem = await loadSemantic();
     const answer = sem.index.get(pickFromPool(sem.answers, NO_DENY, 'warmer', day))!;
     const r = await ranking(sem, answer);
     return { day, sem, answer, r, guesses: [], focus: null, status: 'playing' };

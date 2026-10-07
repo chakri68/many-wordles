@@ -4,24 +4,22 @@
 import { pickBridge, rankFrom, type BridgePuzzle, type Ranking, type Sem } from '../../engine/semantic';
 
 let worker: Worker | null = null;
-// the worker holds one table per version; v1 and v2 days can be open in one session
-const sent = new WeakSet<Sem>();
+let workerFor: Sem | null = null;
 let reqId = 0;
 const rankCache = new Map<string, Promise<Ranking>>();
 const bridgeCache = new Map<string, Promise<BridgePuzzle>>();
 
 function call<T>(sem: Sem, msg: Record<string, unknown>): Promise<T> {
   if (!worker) worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
-  if (!sent.has(sem)) {
+  if (workerFor !== sem) {
     worker.postMessage({
       t: 'init',
-      v: sem.v,
       vocab: sem.vocab.join('\n'),
       emb: sem.emb,
       answers: sem.answers.join('\n'),
       meta: { n: sem.n, dims: sem.dims, common: sem.common, scale2: sem.scale2, bridge: sem.bridge },
     });
-    sent.add(sem);
+    workerFor = sem;
   }
   const id = ++reqId;
   return new Promise((resolve) => {
@@ -33,12 +31,12 @@ function call<T>(sem: Sem, msg: Record<string, unknown>): Promise<T> {
       resolve(e.data as T);
     };
     w.addEventListener('message', on);
-    w.postMessage({ ...msg, v: sem.v, id });
+    w.postMessage({ ...msg, id });
   });
 }
 
 export function ranking(sem: Sem, target: number): Promise<Ranking> {
-  const key = `${sem.v}:${target}`;
+  const key = String(target);
   let p = rankCache.get(key);
   if (!p) {
     p = typeof Worker === 'undefined' ? Promise.resolve(rankFrom(sem, target)) : call<Ranking>(sem, { t: 'rank', target });
@@ -48,7 +46,7 @@ export function ranking(sem: Sem, target: number): Promise<Ranking> {
 }
 
 export function bridgePuzzle(sem: Sem, seed: number): Promise<BridgePuzzle> {
-  const key = `${sem.v}:${seed}`;
+  const key = String(seed);
   let p = bridgeCache.get(key);
   if (!p) {
     p =

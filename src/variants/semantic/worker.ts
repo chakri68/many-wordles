@@ -1,15 +1,14 @@
 // Off-main-thread ranking and path search for Warmer + Bridge.
-import { makeSem, pickBridge, rankFrom, type Sem, type SemVersion } from '../../engine/semantic';
+import { makeSem, pickBridge, rankFrom, type Sem } from '../../engine/semantic';
 
-const sems = new Map<SemVersion, Sem>();
+let sem: Sem | null = null;
 
 self.onmessage = (e: MessageEvent) => {
   const m = e.data;
   if (m.t === 'init') {
-    sems.set(m.v, makeSem(m.v, m.vocab, m.emb, m.meta, m.answers));
+    sem = makeSem(m.vocab, m.emb, m.meta, m.answers);
     return;
   }
-  const sem = sems.get(m.v);
   if (!sem) return;
   const t0 = performance.now();
   if (m.t === 'rank') {

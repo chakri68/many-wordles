@@ -9,12 +9,10 @@ const PINNED: Record<string, string> = {
   'words/answers.v1.txt': '04594103faeb9962defbc84525967600980d1abc4af60209673fff27b1279aae',
   'words/allowed.v1.txt': 'a05b9b9ba711f1bde6a093b4fb250ab679f133594f76729b9afdd0a780c467a7',
   'semantic/vocab.v1.txt': 'c36891c9ba71592697800b6d0a176675cde49d3e423bf00f55e72d9432e60e1d',
-  'semantic/embed.v1.bin': '7745b32cd00797843eab14e49e6cbb6050f5ade327cf5e2d851e34a2c4e10baf',
   'semantic/answers.v1.txt': 'fead4bf2663885846db1383c2d0e975dcd1cbfce76af3d6ceadde3d2d307f3d1',
-  'semantic/meta.v1.json': 'fcb2272c50775d6ca0332d6d8bcfbde4499f13e37e5af815534aa2b4f8bb8ee6',
   'semantic/vocab.v2.txt': '4e8b0493b5afac48ffaf58a95417c512c797e44a84d6dba98aa2c7a76b127c85',
   'semantic/embed.v2.bin': '1c2bc96a25310496a0ef775d9938ea7237e35eb86c173243acd65337023b861d',
-  'semantic/answers.v2.txt': '5f48559a4a1e791393eea4ef9f82537d16b07884b608b2d814a3547fd0595a98',
+  'semantic/answers.v2.txt': '94c34a3f119a5491a5fdf4cc0098db383c519fb6d0ebaf9651c7793e2645a7fa',
   'semantic/meta.v2.json': '6c81c5bb2932db93233ff5dd627e4e8077030bbffd7087cdaac612c3f66dac62',
   'reverse/openers.v1.json': 'b646c2a05a68e55d8a662b68a8e7c7123e228d4b7913e4348c5b6ce7c253586e',
 };

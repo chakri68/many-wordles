@@ -1,5 +1,5 @@
 import { dayLabel } from '../../engine/seed';
-import { dot, linked, loadSemantic, neighbours, semVersion, type Ranking, type Sem } from '../../engine/semantic';
+import { dot, linked, loadSemantic, neighbours, type Ranking, type Sem } from '../../engine/semantic';
 import type { Variant, Flash } from '../types';
 import { bridgePuzzle, ranking } from '../semantic/client';
 import { h, flip, animate, sleep, motionMs } from '../../ui/dom';
@@ -300,7 +300,7 @@ const bridge: Variant<BridgeState, BridgeAction> = {
     <p class="muted credit">Word meanings: <a href="https://github.com/commonsense/conceptnet-numberbatch" target="_blank" rel="noopener">ConceptNet Numberbatch</a>, CC BY-SA 4.0.</p>`,
 
   async init(day, seed) {
-    const sem = await loadSemantic(semVersion(day));
+    const sem = await loadSemantic();
     const p = await bridgePuzzle(sem, seed);
     const toEnd = await ranking(sem, p.end);
     return { day, sem, start: p.start, end: p.end, par: p.path, toEnd, chain: [], hinted: [], status: 'playing' };

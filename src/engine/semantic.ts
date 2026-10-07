@@ -3,24 +3,17 @@
 import { parseList } from './words';
 import { rng, randInt } from './rng';
 
-export type SemVersion = 'v1' | 'v2';
-
-export const semFiles = (v: SemVersion) =>
-  ({
-    vocab: `semantic/vocab.${v}.txt`,
-    embed: `semantic/embed.${v}.bin`,
-    answers: `semantic/answers.${v}.txt`,
-    meta: `semantic/meta.${v}.json`,
-  }) as const;
-
 /**
- * v1 = GloVe, v2 = ConceptNet Numberbatch (scripts/build-embeddings-v2.py).
- * GloVe linked words that share sentences, not meaning (lose -> afford), so
- * Warmer + Bridge switched on 2026-10-08. Earlier days keep v1: their secret,
- * their par and every saved game replay exactly as they were.
+ * ConceptNet Numberbatch, built by scripts/build-embeddings-v2.py. v1 was
+ * GloVe, which linked words that share sentences rather than meaning
+ * ("can't afford to lose" made lose -> afford a Bridge hop).
  */
-export const SEM_V2_FROM = 5; // 2026-10-08
-export const semVersion = (day: number): SemVersion => (day >= SEM_V2_FROM ? 'v2' : 'v1');
+export const SEM_FILES = {
+  vocab: 'semantic/vocab.v2.txt',
+  embed: 'semantic/embed.v2.bin',
+  answers: 'semantic/answers.v2.txt',
+  meta: 'semantic/meta.v2.json',
+} as const;
 
 export interface SemMeta {
   n: number;
@@ -28,29 +21,22 @@ export interface SemMeta {
   /** the first `common` vocab entries (by frequency) form Bridge's search graph */
   common: number;
   scale2: number;
-  /** Bridge: a hop needs dot >= this (≈ cosine 0.5 in v1, 0.35 in v2) */
+  /** Bridge: a hop needs dot >= this (≈ cosine 0.35) */
   bridge: number;
 }
 
 export interface Sem extends SemMeta {
-  v: SemVersion;
   vocab: string[];
   index: Map<string, number>;
   emb: Int8Array;
   answers: string[];
 }
 
-export function makeSem(
-  v: SemVersion,
-  vocabTxt: string,
-  embed: ArrayBuffer | Int8Array,
-  meta: SemMeta,
-  answersTxt: string,
-): Sem {
+export function makeSem(vocabTxt: string, embed: ArrayBuffer | Int8Array, meta: SemMeta, answersTxt: string): Sem {
   const vocab = parseList(vocabTxt);
   const emb = embed instanceof Int8Array ? embed : new Int8Array(embed);
   if (vocab.length !== meta.n || emb.length !== meta.n * meta.dims) throw new Error('semantic table size mismatch');
-  return { ...meta, v, vocab, index: new Map(vocab.map((w, i) => [w, i])), emb, answers: parseList(answersTxt) };
+  return { ...meta, vocab, index: new Map(vocab.map((w, i) => [w, i])), emb, answers: parseList(answersTxt) };
 }
 
 let vocabLoading: Promise<Set<string>> | null = null;
@@ -60,6 +46,8 @@ let vocabLoading: Promise<Set<string>> | null = null;
  * biryani, emoji, …).
  */
 export const EXTRA_WORDS = 'words/extra.v1.txt';
+/** v1's list, not SEM_FILES.vocab: it has ~250 words Numberbatch doesn't. */
+const CLUE_VOCAB = 'semantic/vocab.v1.txt';
 export function loadVocab(): Promise<Set<string>> {
   if (!vocabLoading) {
     const base = import.meta.env?.BASE_URL ?? './';
@@ -68,7 +56,7 @@ export function loadVocab(): Promise<Set<string>> {
         if (!r.ok) throw new Error(`${p}: ${r.status}`);
         return r.text();
       });
-    vocabLoading = Promise.all([get(semFiles('v1').vocab), get(EXTRA_WORDS)])
+    vocabLoading = Promise.all([get(CLUE_VOCAB), get(EXTRA_WORDS)])
       .then(([a, b]) => new Set([...parseList(a), ...parseList(b)]))
       .catch((e) => {
         vocabLoading = null;
@@ -78,31 +66,28 @@ export function loadVocab(): Promise<Set<string>> {
   return vocabLoading;
 }
 
-const loading = new Map<SemVersion, Promise<Sem>>();
-export function loadSemantic(v: SemVersion): Promise<Sem> {
-  let p = loading.get(v);
-  if (!p) {
+let loading: Promise<Sem> | null = null;
+export function loadSemantic(): Promise<Sem> {
+  if (!loading) {
     const base = import.meta.env?.BASE_URL ?? './';
-    const f = semFiles(v);
-    const get = (path: string) =>
-      fetch(new URL(base + path, location.href)).then((r) => {
-        if (!r.ok) throw new Error(`${path}: ${r.status}`);
+    const get = (p: string) =>
+      fetch(new URL(base + p, location.href)).then((r) => {
+        if (!r.ok) throw new Error(`${p}: ${r.status}`);
         return r;
       });
-    p = Promise.all([
-      get(f.vocab).then((r) => r.text()),
-      get(f.embed).then((r) => r.arrayBuffer()),
-      get(f.meta).then((r) => r.json() as Promise<SemMeta>),
-      get(f.answers).then((r) => r.text()),
+    loading = Promise.all([
+      get(SEM_FILES.vocab).then((r) => r.text()),
+      get(SEM_FILES.embed).then((r) => r.arrayBuffer()),
+      get(SEM_FILES.meta).then((r) => r.json() as Promise<SemMeta>),
+      get(SEM_FILES.answers).then((r) => r.text()),
     ])
-      .then(([vocab, e, m, a]) => makeSem(v, vocab, e, m, a))
+      .then(([v, e, m, a]) => makeSem(v, e, m, a))
       .catch((err) => {
-        loading.delete(v);
+        loading = null;
         throw err;
       });
-    loading.set(v, p);
   }
-  return p;
+  return loading;
 }
 
 export function dot(s: Sem, i: number, j: number): number {

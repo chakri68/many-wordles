@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import bridge, { reduce, hops, parHops, links, MAX_CHAIN as MAX } from './index';
 import { seedFor } from '../../engine/seed';
-import { dot, linked, neighbours, SEM_V2_FROM } from '../../engine/semantic';
+import { dot, linked, neighbours } from '../../engine/semantic';
 
 const fresh = (day = 1) => bridge.init(day, seedFor('bridge', day));
 
@@ -80,16 +80,9 @@ describe('bridge help', () => {
   });
 });
 
-describe('bridge tables', () => {
-  it('days before the switch keep their v1 puzzle', async () => {
-    const s = await fresh(SEM_V2_FROM - 1);
-    expect(s.sem.v).toBe('v1');
-    expect(s.par.map((w) => s.sem.vocab[w])).toEqual(['athlete', 'team', 'now', 'afford']);
-  });
-
-  it('v2 links by meaning, not by shared sentences', async () => {
-    const s = await fresh(SEM_V2_FROM);
-    expect(s.sem.v).toBe('v2');
+describe('bridge links', () => {
+  it('link by meaning, not by shared sentences', async () => {
+    const s = await fresh(1);
     const ix = (w: string) => s.sem.index.get(w)!;
     expect(linked(s.sem, ix('flee'), ix('escape'))).toBe(true);
     expect(linked(s.sem, ix('lose'), ix('afford'))).toBe(false);
