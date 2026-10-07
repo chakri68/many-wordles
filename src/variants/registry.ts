@@ -9,7 +9,7 @@ import chrono from './chrono';
 import type { AnyVariant } from './types';
 
 // Adding a variant = write a module, add one line here.
-const ALL: AnyVariant[] = [decay, reverse, suspect, warmer, bridge, missing, define, chrono];
+const ALL: AnyVariant[] = [decay, suspect, warmer, bridge, reverse, missing, define, chrono];
 
 /** Content variants stay hidden in production until a reviewed pool is frozen. */
 export const VARIANTS = ALL.filter((v) => v.available?.() ?? true);
